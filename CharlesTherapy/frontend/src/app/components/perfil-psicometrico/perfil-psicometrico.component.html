@@ -1,0 +1,89 @@
+<div class="chat-container">
+  <app-sidebar></app-sidebar>
+
+  <main class="chat-window">
+    <header class="chat-header">
+      PERFIL DEL PACIENTE
+    </header>
+
+    <section class="messages perfil-section">
+      <div class="message user perfil-bloque">
+        <h3>Información del Usuario</h3>
+        <div class="text">
+          <strong>Usuario:</strong> {{ paciente.nombre }}<br />
+          <strong>Correo:</strong> {{ paciente.email }}
+        </div>
+      </div>
+
+      <!-- Botón de recomendación -->
+      <div class="message user perfil-bloque">
+        <button (click)="obtenerRecomendacion()" class="btn-recomendacion" [disabled]="loading">
+          {{ loading ? 'Cargando...' : 'Recomendación de especialistas' }}
+        </button>
+
+        <div *ngIf="recomendacion" class="recomendacion-ia">
+          <h4>Recomendación de la IA:</h4>
+          <p>{{ recomendacion }}</p>
+        </div>
+
+        <!-- Nuevo botón para obtener tipo de especialista recomendado -->
+        <button (click)="obtenerTipoEspecialistaRecomendado()" class="btn-recomendacion" [disabled]="loadingTipoEspecialista || !bigFiveResult">
+          {{ loadingTipoEspecialista ? 'Cargando...' : 'Especialista recomendado (tipo)' }}
+        </button>
+        <div *ngIf="tipoEspecialistaRecomendado" class="recomendacion-ia">
+          <h4>Tipo de especialista recomendado:</h4>
+          <p>{{ tipoEspecialistaRecomendado }}</p>
+          <!-- Botón para buscar especialistas -->
+          <button class="btn-recomendacion"
+                  (click)="obtenerEspecialistasPorEspecialidad(tipoEspecialistaRecomendado)"
+                  [disabled]="loadingEspecialistas">
+            {{ loadingEspecialistas ? 'Buscando...' : 'Ver especialistas disponibles' }}
+          </button>
+        </div>
+        <!-- Lista de especialistas -->
+        <div *ngIf="especialistas.length > 0" class="recomendacion-ia">
+          <h4>Especialistas disponibles:</h4>
+          <ul>
+            <li *ngFor="let esp of especialistas">
+              {{ esp.usuario }} - {{ esp.correo }}
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Resultados Big Five -->
+      <div class="message user perfil-bloque">
+        <h3>Resultados Big Five</h3>
+        <div class="grafica-estadisticas" *ngIf="bigFiveResult">
+          <div class="barra" *ngFor="let trait of bigFiveTraits">
+            <span class="nombre">{{ trait.label }}</span>
+            <div class="barra-base">
+              <div class="barra-relleno"
+                   [ngClass]="getColor(getTraitValue(trait.key))"
+                   [style.width.%]="getWidth(getTraitValue(trait.key), 5)">
+              </div>
+            </div>
+            <span class="valor">{{ getTraitValue(trait.key) | number:'1.2-2' }}/5</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Botón flotante para abrir el chat -->
+  <div class="chat-fab" (click)="openChat(paciente.id_usuario || 0)">
+    <i class="fa-solid fa-robot"></i>
+  </div>
+
+  <!-- Modal general del chatbot -->
+  <app-chatbot-modal
+    [show]="showChatModal"
+    [messages]="messages"
+    [userInput]="userInput"
+    [loading]="loadingChat"
+    [chatSesionGuardada]="chatSesionGuardada"
+    [guardarSesionChat]="guardarSesionChat.bind(this)"
+    [sendMessage]="sendMessage.bind(this)"
+    [closeChat]="closeChat.bind(this)">
+  </app-chatbot-modal>
+</div>

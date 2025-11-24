@@ -1,0 +1,68 @@
+<div class="login-container">
+  <form (ngSubmit)="onSubmit()" class="login-form">
+    <div class="login-header">Registro</div>
+
+    <div class="form-group">
+      <label for="nombre">Nombre</label>
+      <input type="text" id="nombre" [(ngModel)]="nombre" name="nombre" required />
+    </div>
+
+    <div class="form-group">
+      <label for="email">Correo Electrónico</label>
+      <input type="email" id="email" [(ngModel)]="email" name="email" required />
+    </div>
+
+    <div class="form-group">
+      <label for="password">Contraseña</label>
+      <input type="password" id="password" [(ngModel)]="password" name="password" required />
+    </div>
+
+    <div class="form-group">
+      <label for="tipo">Tipo de Usuario</label>
+      <select id="tipo" [(ngModel)]="tipo" name="tipo" required>
+        <option value="" disabled selected>Selecciona una opción</option>
+        <option value="Paciente">Paciente</option>
+        <option value="Especialista">Especialista</option>
+      </select>
+    </div>
+
+    <div class="form-group" *ngIf="tipo === 'Especialista'">
+      <label for="cedula">Cédula profesional</label>
+      <input type="text" id="cedula" [(ngModel)]="cedula" name="cedula" required />
+    </div>
+
+    <div class="form-group" *ngIf="tipo === 'Especialista'">
+      <label for="especialidad">Especialidad</label>
+      <select id="especialidad" [(ngModel)]="especialidad" name="especialidad" required>
+        <option value="" disabled selected>Selecciona una especialidad</option>
+        <option value="Psicólogo clínico">Psicólogo clínico</option>
+        <option value="Psicólogo educativo">Psicólogo educativo</option>
+        <option value="Psicólogo organizacional o laboral">Psicólogo organizacional o laboral</option>
+        <option value="Psicólogo forense">Psicólogo forense</option>
+        <option value="Psicólogo de la salud">Psicólogo de la salud</option>
+        <option value="Psicólogo deportivo">Psicólogo deportivo</option>
+        <option value="Psicólogo neuropsicólogo">Psicólogo neuropsicólogo</option>
+        <option value="Psicólogo social">Psicólogo social</option>
+        <option value="Psicólogo infantil o del desarrollo">Psicólogo infantil o del desarrollo</option>
+        <option value="Psicólogo cognitivo-conductual">Psicólogo cognitivo-conductual</option>
+        <option value="Psicoterapeuta">Psicoterapeuta</option>
+        <option value="Psicólogo comunitario">Psicólogo comunitario</option>
+        <option value="Psicólogo experimental">Psicólogo experimental</option>
+        <option value="Psicólogo gerontológico">Psicólogo gerontológico</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="edad">Edad</label>
+      <input type="number" id="edad" [(ngModel)]="edad" name="edad" required min="1" />
+    </div>
+
+    <button type="submit" [disabled]="loading">Registrarse</button>
+    
+    <button type="button" class="secondary-button" (click)="redirectToLogin()">
+      ¿Ya tienes cuenta? Inicia sesión
+    </button>
+
+    <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+  </form>
+</div>

@@ -1,0 +1,164 @@
+body, html {
+  background: #f2f7f6 !important;
+}
+
+.chat-container {
+  display: flex;
+  flex-direction: row;
+  min-height: 100vh;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f2f7f6;
+  align-items: flex-start;
+  justify-content: flex-start;
+  position: relative;
+  width: 100%;
+}
+
+/* Ocultar texto hasta que se expanda */
+.label {
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s, opacity 0.3s ease;
+  font-size:20px;
+}
+
+.history-window {
+  width: 100%;
+  max-width: 900px;
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  align-items: center;
+  justify-content: flex-start;
+  border-radius: 18px;
+  margin: 32px auto 32px 32px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+  padding-bottom: 32px;
+  flex: 1;
+}
+
+/* Asegura que la sidebar no se sobreponga ni se oculte */
+app-sidebar {
+  flex: 0 0 260px;
+  min-width: 220px;
+  max-width: 320px;
+  z-index: 2;
+  height: 100vh;
+  position: sticky;
+  top: 0;
+  background: #f9fbfa;
+  box-shadow: 2px 0 8px rgba(0,0,0,0.04);
+}
+
+.header {
+  padding: 18px 0 12px 0;
+  background-color: #f9fbfa;
+  font-weight: bold;
+  font-size: 24px;
+  color: #345c58;
+  margin: 0px 0 20px 0;
+  width: 100%;
+  text-align: center;
+  border-radius: 18px 18px 0 0;
+}
+
+.date {
+  width: 90%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  background-color: #f9fbfa;
+  border: 2px solid #5a8f87;
+  border-radius: 25px;
+  padding: 24px 18px;
+}
+
+.date-argument {
+  border-bottom: 2px solid #5a8f87;
+  padding: 8px 5px;
+  margin-bottom: 0px;
+  font-size: 18px;
+  color: #345c58;
+}
+
+.date-argument:last-child {
+  border-bottom: none;
+}
+
+/* Botón flotante tipo globo para el chat */
+.chat-fab {
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+  width: 64px;
+  height: 64px;
+  background: #5a8f87;
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+  cursor: pointer;
+  z-index: 1001;
+  transition: background 0.2s;
+}
+
+.chat-fab:hover {
+  background: #47746d;
+}
+
+.sidebar-contacts {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 32px 12px 12px 12px;
+  background: #f9fbfa;
+  min-width: 180px;
+  max-width: 260px;
+  height: 100vh;
+  box-sizing: border-box;
+}
+
+.contact {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 8px 0;
+  border-radius: 10px;
+  transition: background 0.2s;
+  cursor: pointer;
+}
+
+.contact:hover {
+  background: #eaf4f2;
+}
+
+.avatar-circle {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #b8d8d4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  color: #fff;
+  overflow: hidden;
+  border: 2px solid #5a8f87;
+}
+
+.avatar-circle img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.contact-name {
+  font-size: 1.1rem;
+  color: #345c58;
+  font-weight: 500;
+}

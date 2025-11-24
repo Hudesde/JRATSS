@@ -1,0 +1,53 @@
+{
+  "openai": {
+    "api_key": "YOUR_OPENAI_API_KEY_HERE",
+    "whisper_model": "whisper-1",
+    "gpt_model": "gpt-4o",
+    "api_base": "https://api.openai.com/v1"
+  },
+  "paths": {
+    "home": "$HOME",
+    "allowed_dirs": [
+      "$HOME/Documentos",
+      "$HOME/Descargas",
+      "$HOME/Proyectos",
+      "$HOME/Escritorio",
+      "$HOME/Desktop"
+    ],
+    "temp_audio": "/tmp/botas_audio"
+  },
+  "audio": {
+    "format": "wav",
+    "sample_rate": 16000,
+    "channels": 1,
+    "max_duration": 30
+  },
+  "tts": {
+    "engine": "espeak",
+    "language": "es",
+    "speed": 120,
+    "voice": "spanish",
+    "pitch": 50,
+    "gap": 10,
+    "openai_voice": "nova",
+    "openai_model": "tts-1"
+  },
+  "nlp": {
+    "provider": "openai",
+    "lmstudio": {
+      "api_base": "http://localhost:1234/v1",
+      "model": "deepseek-r1-distill-qwen-7b",
+      "temperature": 0.3
+    }
+  },
+  "security": {
+    "confirm_destructive": true,
+    "dry_run": false,
+    "max_file_operations": 100
+  },
+  "gui": {
+    "width": 800,
+    "height": 600,
+    "theme": "default"
+  }
+}

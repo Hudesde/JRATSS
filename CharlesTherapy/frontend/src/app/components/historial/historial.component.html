@@ -1,0 +1,38 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<div class="chat-container">
+  <app-sidebar></app-sidebar>
+  <div class="sidebar-contacts">
+    <div class="contact" *ngFor="let contacto of contactos">
+      <div class="avatar-circle">
+        <img *ngIf="contacto.foto" [src]="contacto.foto" alt="avatar" />
+        <span *ngIf="!contacto.foto">{{ contacto.inicial }}</span>
+      </div>
+      <div class="contact-name">{{ contacto.nombre }}</div>
+    </div>
+  </div>
+  <div class="history-window">
+    <div class="header">Historial de Sesiones</div>
+    <div class="date">
+      <div *ngFor="let sesion of sesiones" class="date-argument">
+        Sesión: {{ sesion.fecha }} - "{{ sesion.descripcion }}"
+      </div>
+      <div *ngIf="!sesiones.length" class="date-argument" style="color:#888;">No hay sesiones registradas.</div>
+    </div>
+  </div>
+
+  <!-- Botón flotante para abrir el chat -->
+  <div class="chat-fab" (click)="openChat()">
+    <i class="fa-solid fa-robot"></i>
+  </div>
+
+  <!-- Modal general del chatbot -->
+  <app-chatbot-modal
+    [show]="showChatModal"
+    [messages]="messages"
+    [userInput]="userInput"
+    [loading]="loading"
+    [chatSesionGuardada]="chatSesionGuardada"
+    [guardarSesionChat]="guardarSesionChat.bind(this)"
+  ></app-chatbot-modal>
+</div>

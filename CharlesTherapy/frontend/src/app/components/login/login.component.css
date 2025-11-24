@@ -1,0 +1,90 @@
+.login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: #f2f7f6;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.login-header {
+  font-size: 26px;
+  font-weight: bold;
+  color: #345c58;
+  margin-bottom: 15px;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 320px;
+  background-color: #ffffff;
+  padding: 20px;
+  border: 1px solid #a7c9c2;
+  border-radius: 12px;
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+label {
+  font-size: 14px;
+  color: #345c58;
+}
+
+input {
+  padding: 10px;
+  border: 1px solid #a0c3bd;
+  border-radius: 8px;
+  outline: none;
+  background-color: #ffffff;
+  color: #333;
+}
+
+button[type="submit"] {
+  padding: 10px;
+  background-color: #5a8f87;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+  background-color: #47746d;
+}
+
+button:disabled {
+  background-color: #a0c3bd;
+  cursor: not-allowed;
+}
+
+button.secondary-button {
+  background-color: transparent;
+  color: #5a8f87;
+  margin-top: 15px;
+  padding: 8px;
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+button.secondary-button:hover {
+  color: #345c58;
+}
+
+.error-message {
+  margin-top: 10px;
+  color: #d9534f;
+  font-size: 14px;
+  text-align: center;
+}

@@ -1,0 +1,97 @@
+<div class="layout">
+
+  <app-sidebar></app-sidebar>
+  <!-- {{fecha | date: 'dd/MM/yyyy'}} -->
+  <div class="citas-container">
+    <h2>Vista previa de calendario con Citas</h2>
+    
+    <div class="calendar-container">
+      <full-calendar #calendar [options]="calendarOptions"></full-calendar>
+    </div>
+    <div class="calendar-legend">
+      <h3>Estado de las citas segun su color</h3>
+      <ul class="colors-style" style="list-style: none; padding-left: 0;">
+        <li style="display: flex; align-items: center; margin: 8px;">
+          <span style="display: inline-block; width: 16px; height: 16px; background-color: #dc3545; margin-right: 8px; border: 1px solid #000;"></span>
+          Cancelada
+        </li>
+        <li style="display: flex; align-items: center; margin: 8px;">
+          <span style="display: inline-block; width: 16px; height: 16px; background-color: #007bff; margin-right: 8px; border: 1px solid #000;"></span>
+          Terminada
+        </li>
+        <li style="display: flex; align-items: center; margin: 8px;">
+          <span style="display: inline-block; width: 16px; height: 16px; background-color: #28a745; margin-right: 8px; border: 1px solid #000;"></span>
+          Aceptada
+        </li>
+        <li style="display: flex; align-items: center; margin: 8px;">
+          <span style="display: inline-block; width: 16px; height: 16px; background-color: #ffc107; margin-right: 8px; border: 1px solid #000;"></span>
+          Por confirmar
+        </li>
+      </ul>
+    </div>
+     
+    
+
+    <button (click)="abirModal()" class="btn-agendar">Agendar cita</button>
+    
+
+  </div>
+</div>
+
+
+<!-- Modal -->
+<div *ngIf="mostrarModal" class="modal-wrapper">
+  <div class="modal-backdrop" (click)="mostrarModal = false"></div>
+  <div class="modal">
+    <div class="citas-container-modal">
+      <button class="close-modal" (click)="mostrarModal=false">x</button>
+      <h2 style="text-align: center;">Agendación de Citas</h2>
+
+      <div class="calendar-container-modal">
+        <full-calendar [options]="calendarModalOptions"></full-calendar>
+      </div>
+
+      <form (ngSubmit)="agendarCita()" class="cita-form">
+        <div class="form-group">
+          <p>Fecha y hora: {{new_cita.fecha.toLocaleString()}}</p>
+          <label for="paciente">Especialistas:</label>
+          <select name="paciente" id="pacientes" [(ngModel)]="new_cita.paciente_id" required>
+            <option *ngFor="let paciente of pacientes" [value]="paciente.id_usuario"> {{paciente.usuario}}</option>
+          </select>
+         
+          
+        </div>
+        
+        
+        <button type="submit" class="btn-agendar" >Guardar cambios</button>
+      </form>
+      
+    </div>
+  </div>
+</div>
+
+<div *ngIf="mostrarModalActualizar" class="modal-wrapper">
+  <div class="modal-backdrop" (click)="mostrarModalActualizar = false"></div>
+  <div class="modal">
+    <div class="citas-container-modal">
+      <button class="close-modal" (click)="mostrarModalActualizar=false">x</button>
+      <h2 style="text-align: center;">Actualizar Cita</h2>
+      <div class="calendar-container-modal">
+        <full-calendar [options]="calendarModalUpdateOptions"></full-calendar>
+      </div>
+      <form (ngSubmit)="actualizarCita()" class="cita-form">
+        <div class="form-group">
+          <p>Fecha y hora: {{cita.fecha.toLocaleString()}}</p>
+          <p>Paciente:{{cita.paciente_nombre}}</p>
+          <label for="estado-modal">Estado de la cita</label>
+          <select name="estado-modal" id="estado-modal" [(ngModel)]="cita.estado" name="estado-modal" required>
+            <option value="en confirmacion">Por Confirmar</option>
+            <option value="cancelada">Cancelar</option>
+          </select>
+        </div>
+        
+        <button type="submit" class="btn-agendar">Guardar nuevos cambios</button>
+      </form>
+      
+    </div>
+</div>

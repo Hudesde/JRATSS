@@ -1,0 +1,35 @@
+<div *ngIf="show" class="chatbot-modal-backdrop" (click)="closeChat()">
+  <div class="chatbot-modal" (click)="$event.stopPropagation()">
+    <header class="chatbot-header">
+      THERAPIST CHATBOT
+      <button class="close-btn" (click)="closeChat()">&times;</button>
+    </header>
+    <section class="chatbot-messages">
+      <div *ngFor="let msg of messages" 
+           [class.bot]="msg.role === 'assistant'"
+           [class.user]="msg.role === 'user'"
+           class="message">
+        <div *ngIf="msg.role === 'user'" class="avatar"></div>
+        <div class="text">
+          <ng-container *ngIf="msg.role === 'assistant'; else userMsg">
+            {{ msg.animatedContent || msg.content }}
+          </ng-container>
+          <ng-template #userMsg>{{ msg.content }}</ng-template>
+        </div>
+      </div>
+      <div *ngIf="loading" class="message bot">Thinking...</div>
+    </section>
+    <footer class="chatbot-input">
+      <input [(ngModel)]="userInput" 
+             (keyup.enter)="sendMessage()"
+             type="text" 
+             placeholder="Type a message..." />
+      <button (click)="sendMessage()">
+        <span class="send"><i class="fa-solid fa-paper-plane"></i></span>
+      </button>
+      <button *ngIf="!chatSesionGuardada" (click)="guardarSesionChat()" class="btn-guardar-chat" aria-label="Guardar sesión">
+        <i class="fa-solid fa-floppy-disk"></i>
+      </button>
+    </footer>
+  </div>
+</div>

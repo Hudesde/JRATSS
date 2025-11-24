@@ -1,0 +1,36 @@
+# .gitignore para Botas
+
+# Configuración local
+config/config.json
+
+# Archivos temporales de audio
+/tmp/botas_audio/
+*.wav
+*.mp3
+*.ogg
+
+# Logs
+*.log
+logs/
+
+# Archivos de Perl
+*.swp
+*.bak
+*~
+
+# Módulos Perl locales
+local/
+.cpanm/
+
+# Directorios de test
+test_workspace/
+sandbox/
+
+# IDE
+.vscode/
+.idea/
+*.sublime-*
+
+# OS
+.DS_Store
+Thumbs.db

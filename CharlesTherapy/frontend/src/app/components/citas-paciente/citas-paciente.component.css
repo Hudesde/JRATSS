@@ -1,0 +1,196 @@
+.layout {
+  display: flex;
+  height: 100dvh; /* O lo que necesites */
+  max-height: 100dvh;
+  overflow-y: scroll;
+}
+.sidebar {
+  flex-shrink: 0; /* Evita que se encoja */
+}
+.citas-container {
+  flex-grow: 1;
+    max-width: 100dvh;
+    margin: auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+  /* overflow-y: auto; */
+  }
+  
+  .calendar-container {
+    margin-bottom: 30px;
+    margin: 30 auto;
+    width: 90dvh;
+    height: auto;
+  }
+    
+  label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+  
+  input, select, textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  
+  .btn-agendar {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  .btn-agendar:hover {
+    background-color: #45a049;
+  }
+  
+  .citas-list {
+    margin-top: 20px;
+  }
+  
+  .cita-item {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 15px;
+    margin-bottom: 10px;
+    position: relative;
+  }
+
+  .btn-agendar {
+    background-color: #1e2a38; /* azul oscuro como los botones del calendario */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+    margin: 5dvh auto;
+
+  }
+  
+  .btn-agendar:hover {
+    background-color: #32465a; /* un poco más claro al pasar el mouse */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  /* modal */
+  .modal-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 999;
+    overflow-y: auto; /* <-- Permite scroll si el modal es más alto que la pantalla */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2vh 0; /* espacio para respiración */
+  }
+  
+  .modal-backdrop {
+    position: fixed; /* <- importante: usar fixed para cubrir toda la pantalla */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: -1;
+  }
+  
+  .modal {
+    background: white;
+    padding: 25px;
+    border-radius: 8px;
+    width: 90vw;
+    max-width: 800px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    position: relative; /* Para posicionar el botón de cierre dentro */
+  }
+
+
+  .close-modal{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    font-size: 20px;
+    color: #333;
+    background-color: white;
+    border: none;
+    /* font-family: "Arial", sans-serif; */
+    /* font-weight: bold; */
+    transition: color 0.3s ease;
+    font-size: 5dvh;
+  }
+  /* Contenedor general (ajustar escalado global) */
+.calendar-container-modal {
+  font-family: "Arial", sans-serif;
+  font-size: 14px;
+  width: 80dvh; /* puedes aumentar un poco esto si se ve muy comprimido */
+  max-height: 50dvh; /* Ajusta según necesidad */
+  overflow-y:scroll; /* Permite desplazamiento si el contenido es demasiado grande */
+  margin: auto;
+}
+
+  /* Títulos grandes como "May 2025" */
+.fc-toolbar-title {
+  font-size: 1.2rem; /* Ajusta según necesidad */
+  font-weight: 600;
+}
+
+/* Botones como 'today', 'month', 'week', 'day' */
+.fc-button {
+  font-size: 0.875rem;
+  padding: 0.4em 0.75em;
+}
+
+/* Días de la semana: Sun, Mon, etc. */
+.fc-col-header-cell-cushion {
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+/* Números dentro de cada celda de día */
+.fc-daygrid-day-number {
+  font-size: 0.75rem;
+  padding: 4px;
+}
+
+/* Evento dentro del calendario si usas eventos */
+.fc-event-title {
+  font-size: 0.75rem;
+}
+
+/* Fija la cabecera de los días al hacer scroll en FullCalendar */
+.fc-scrollgrid-section-header > * {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  background-color: white; /* Fondo blanco para evitar transparencia */
+}
+.fc-toolbar-ltr{
+  position: absolute;
+  top: 0;
+  z-index: 10;
+}
+
+
+
+
+.colors-style{
+  display: flex;
+}

@@ -1,0 +1,64 @@
+{
+  "name": "Frontend - Punto de Venta",
+  "description": "Estructura de frontend para un sistema de punto de venta con React",
+  "structure": [
+    "src",
+    "src/components",
+    "src/components/common",
+    "src/components/login",
+    "src/components/inventario",
+    "src/components/ventas",
+    "src/components/reportes",
+    "src/services",
+    "src/hooks",
+    "src/utils",
+    "src/assets",
+    "src/assets/images",
+    "src/assets/styles",
+    "public"
+  ],
+  "features": {
+    "login": [
+      "src/components/login/LoginForm.jsx",
+      "src/components/login/LoginPage.jsx",
+      "src/services/authService.js"
+    ],
+    "inventario": [
+      "src/components/inventario/ProductList.jsx",
+      "src/components/inventario/ProductForm.jsx",
+      "src/components/inventario/InventoryPage.jsx",
+      "src/services/inventoryService.js"
+    ],
+    "ventas": [
+      "src/components/ventas/SaleForm.jsx",
+      "src/components/ventas/ProductSelector.jsx",
+      "src/components/ventas/Cart.jsx",
+      "src/components/ventas/SalesPage.jsx",
+      "src/services/salesService.js"
+    ],
+    "reportes": [
+      "src/components/reportes/SalesReport.jsx",
+      "src/components/reportes/InventoryReport.jsx",
+      "src/components/reportes/ReportsPage.jsx",
+      "src/services/reportsService.js"
+    ],
+    "usuarios": [
+      "src/components/usuarios/UserList.jsx",
+      "src/components/usuarios/UserForm.jsx",
+      "src/components/usuarios/UsersPage.jsx",
+      "src/services/userService.js"
+    ]
+  },
+  "base_files": [
+    "package.json",
+    "README.md",
+    ".gitignore",
+    "src/App.jsx",
+    "src/index.jsx",
+    "src/components/common/Header.jsx",
+    "src/components/common/Sidebar.jsx",
+    "src/components/common/Footer.jsx",
+    "src/utils/api.js",
+    "src/utils/constants.js"
+  ]
+}

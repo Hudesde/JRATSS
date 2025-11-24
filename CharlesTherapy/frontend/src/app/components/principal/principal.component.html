@@ -1,0 +1,74 @@
+<div class="chat-container">
+  <app-sidebar></app-sidebar>
+  <main class="main-center-content">
+    <div class="centered-content">
+      <!-- 1. Mini Perfil -->
+      <section class="mini-perfil card">
+        <div class="avatar-container">
+          <img class="avatar-img" src="assets/avatar-default.png" alt="Avatar" />
+        </div>
+        <div class="perfil-info">
+          <h2>Mi Perfil</h2>
+          <div class="perfil-datos">
+            <div><strong>Nombre:</strong> {{ usuario.usuario || 'Nombre Usuario' }}</div>
+            <div><strong>Objetivo en turno:</strong> {{ usuario.objetivo || 'Sin objetivo asignado' }}</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. Resumen Diario -->
+      <section class="resumen-semanal card resumen-color-semanal">
+        <h2>Resumen Diario</h2>
+        <button [disabled]="!tieneResumenSemanal" class="btn-resumen resumen-btn-semanal" (click)="toggleResumen()">
+          {{ mostrarResumen ? 'Ocultar Resumen' : 'Ver Resumen Diario' }}
+        </button>
+        <button *ngIf="!tieneResumenSemanal" class="btn-generar-daily resumen-btn-daily" (click)="generarDailyResume()">
+          Generar Daily Resume
+        </button>
+        <div *ngIf="mostrarResumen && resumenDiario" class="resumen-diario-box">
+          <h3>Resumen generado:</h3>
+          <p>{{ resumenDiario }}</p>
+        </div>
+      </section>
+
+      <!-- 3. Citas -->
+      <section class="citas card">
+        <h2>Citas</h2>
+        <ng-container *ngIf="citaEnTurno; else sinCita">
+          <div class="cita-info">
+            <div><strong>Fecha:</strong> {{ citaEnTurno.fecha }}</div>
+            <div><strong>Hora:</strong> {{ citaEnTurno.hora }}</div>
+            <div><strong>Motivo:</strong> {{ citaEnTurno.motivo }}</div>
+            <!-- Agrega más campos según sea necesario -->
+          </div>
+        </ng-container>
+        <ng-template #sinCita>
+          <button class="btn-agendar" (click)="irACitas()">Agendar Cita</button>
+        </ng-template>
+        <!-- Aquí irá el modal de agendar cita -->
+      </section>
+
+      <!-- Apartado para el test Big Five -->
+      <section class="bigfive-manual card">
+        <h2>Test de Personalidad Big Five</h2>
+        <button class="btn-bigfive" (click)="irAPerfilPsicometrico()">Ver mi resultado Big Five</button>
+        <button class="btn-bigfive" (click)="irABigFiveTest()">Realizar el test Big Five</button>
+      </section>
+    </div>
+  </main>
+</div>
+
+<!-- Botón flotante para abrir el chat -->
+<div class="chat-fab" (click)="openChat()">
+  <i class="fa-solid fa-robot"></i>
+</div>
+
+<!-- Modal general del chatbot -->
+<app-chatbot-modal
+  [show]="showChatModal"
+  [messages]="messages"
+  [userInput]="userInput"
+  [loading]="loading"
+  [chatSesionGuardada]="chatSesionGuardada"
+  [guardarSesionChat]="guardarSesionChat.bind(this)"
+></app-chatbot-modal>

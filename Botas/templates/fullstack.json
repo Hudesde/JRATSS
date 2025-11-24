@@ -1,0 +1,48 @@
+{
+  "name": "Fullstack - Aplicación Completa",
+  "description": "Estructura fullstack con frontend React y backend Node.js",
+  "structure": [
+    "frontend",
+    "frontend/src",
+    "frontend/src/components",
+    "frontend/src/pages",
+    "frontend/src/services",
+    "frontend/public",
+    "backend",
+    "backend/src",
+    "backend/src/controllers",
+    "backend/src/models",
+    "backend/src/routes",
+    "backend/src/middleware",
+    "shared",
+    "shared/types",
+    "shared/constants",
+    "docs"
+  ],
+  "features": {
+    "auth": [
+      "frontend/src/components/auth/LoginForm.jsx",
+      "backend/src/controllers/authController.js",
+      "backend/src/routes/authRoutes.js",
+      "shared/types/User.js"
+    ],
+    "dashboard": [
+      "frontend/src/pages/Dashboard.jsx",
+      "frontend/src/components/dashboard/Stats.jsx",
+      "backend/src/controllers/dashboardController.js"
+    ],
+    "admin": [
+      "frontend/src/pages/AdminPanel.jsx",
+      "backend/src/middleware/adminMiddleware.js",
+      "backend/src/controllers/adminController.js"
+    ]
+  },
+  "base_files": [
+    "README.md",
+    "docker-compose.yml",
+    ".gitignore",
+    "frontend/package.json",
+    "backend/package.json",
+    "shared/package.json"
+  ]
+}

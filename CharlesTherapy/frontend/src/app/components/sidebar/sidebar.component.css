@@ -1,0 +1,248 @@
+/* Copiado de principal.component.css solo la parte de la sidebar y relacionados */
+:host {
+  display: block;
+  width: 90px;
+  min-width: 90px;
+  flex-shrink: 0;
+}
+
+.sidebar {
+  position: fixed;
+  width: 90px; /* 60px + 30px extra */
+  height: 100vh;
+  background-color: #d2e4e2;
+  border-right: 2px solid #b2cfc9;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-top: 10px;
+  gap: 20px;
+  transition: width 0.3s ease, background 0.5s;
+  /* overflow: hidden; */
+  animation: header-sidebar-rainbow 48s linear infinite;
+  border-radius: 0; /* Sin esquinas redondeadas */
+  position: relative;
+  width: 90px;
+  min-width: 90px;
+  max-width: 90px;
+  transition: width 0.3s cubic-bezier(0.4,0,0.2,1);
+}
+
+/* Clases de color según estado de ánimo */
+.sidebar-feliz {
+  background: linear-gradient(180deg, #ffe066 0%, #fff6b3 100%);
+  border-right: 2px solid #ffd700;
+}
+.sidebar-triste {
+  background: linear-gradient(180deg, #a3c9f7 0%, #e3f0fc 100%);
+  border-right: 2px solid #6fa3ef;
+}
+.sidebar-ansioso {
+  background: linear-gradient(180deg, #f7cac9 0%, #fbeee6 100%);
+  border-right: 2px solid #f5a9a7;
+}
+.sidebar-enojado {
+  background: linear-gradient(180deg, #ffb3b3 0%, #ffe0e0 100%);
+  border-right: 2px solid #ff6666;
+}
+.sidebar-neutral {
+  background: linear-gradient(180deg, #d2e4e2 0%, #b2cfc9 100%);
+  border-right: 2px solid #b2cfc9;
+}
+
+/* Animación para perfil dañino: Rojos y violetas */
+.sidebar-danger {
+  background: linear-gradient(270deg, #d46a8a, #7c4d8a, #d46a8a, #7c4d8a, #d46a8a, #7c4d8a);
+  background-size: 1200% 1200%;
+  animation: sidebar-danger-anim 14s linear infinite;
+  transition: background 1.8s cubic-bezier(0.4,0,0.2,1);
+  box-shadow: 0 0 32px 8px #d46a8a55, 0 0 64px 16px #7c4d8a33;
+}
+@keyframes sidebar-danger-anim {
+  0% {background-position:0% 50%;}
+  25% {background-position:50% 100%;}
+  50% {background-position:100% 50%;}
+  75% {background-position:50% 0%;}
+  100% {background-position:0% 50%;}
+}
+
+/* Animación para perfil normal: Amarillos y naranjas */
+.sidebar-normal {
+  background: linear-gradient(270deg, #ffe9a7, #ffb347, #ffe9a7, #ffb347, #ffe9a7, #ffb347);
+  background-size: 1200% 1200%;
+  animation: sidebar-normal-anim 14s linear infinite;
+  transition: background 1.8s cubic-bezier(0.4,0,0.2,1);
+  box-shadow: 0 0 32px 8px #ffe9a755, 0 0 64px 16px #ffb34733;
+}
+@keyframes sidebar-normal-anim {
+  0% {background-position:0% 50%;}
+  25% {background-position:50% 100%;}
+  50% {background-position:100% 50%;}
+  75% {background-position:50% 0%;}
+  100% {background-position:0% 50%;}
+}
+
+/* Animación para perfil saludable: Verdes y azules */
+.sidebar-healthy {
+  background: linear-gradient(270deg, #a7e9c5, #6ec6ff, #a7e9c5, #6ec6ff, #a7e9c5, #6ec6ff);
+  background-size: 1200% 1200%;
+  animation: sidebar-healthy-anim 14s linear infinite;
+  transition: background 1.8s cubic-bezier(0.4,0,0.2,1);
+  box-shadow: 0 0 32px 8px #a7e9c555, 0 0 64px 16px #6ec6ff33;
+}
+@keyframes sidebar-healthy-anim {
+  0% {background-position:0% 50%;}
+  25% {background-position:50% 100%;}
+  50% {background-position:100% 50%;}
+  75% {background-position:50% 0%;}
+  100% {background-position:0% 50%;}
+}
+
+/* Nueva clase para perfil con Big Five en 0: Azul marino */
+.sidebar-azulmarino {
+  background: linear-gradient(270deg, #0a2342, #274690, #1e355d, #0a2342);
+  background-size: 800% 800%;
+  animation: sidebar-azulmarino-anim 18s linear infinite;
+  transition: background 1.8s cubic-bezier(0.4,0,0.2,1);
+  box-shadow: 0 0 32px 8px #0a234299, 0 0 64px 16px #27469055;
+}
+@keyframes sidebar-azulmarino-anim {
+  0% {background-position:0% 50%;}
+  50% {background-position:100% 50%;}
+  100% {background-position:0% 50%;}
+}
+
+.sidebar {
+  transition: background 1.2s cubic-bezier(0.4,0,0.2,1), background-size 1.2s cubic-bezier(0.4,0,0.2,1);
+  backdrop-filter: blur(8px) saturate(1.2);
+  background-clip: padding-box;
+  border-radius: 0;
+  border-right: 2px solid rgba(255,255,255,0.15);
+  box-shadow: 0 4px 32px 0 rgba(0,0,0,0.12);
+}
+
+.sidebar:hover {
+  width: 180px;
+  min-width: 180px;
+  max-width: 180px;
+}
+
+.sidebar a{
+    text-decoration: none;
+    color: black;
+}
+
+/* Subtonos para iconos y hover */
+.menu-item {
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  width: 100%;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  font-size: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  animation: header-sidebar-rainbow 48s linear infinite;
+}
+
+.menu-item:hover {
+  background-color: rgba(255,255,255,0.25);
+}
+
+.menu-item .icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  margin: 0 auto 4px auto;
+}
+
+.icon {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #e6f2f1;
+  border: 2px solid #5a8f87;
+  border-radius: 50%;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  animation: header-sidebar-rainbow 48s linear infinite;
+  transition: filter 0.3s, box-shadow 0.3s;
+}
+
+.icon i {
+  font-size: 18px; 
+  color: #345c58;
+}
+
+.menu-item .label {
+  display: block;
+  font-size: 13px;
+  margin-top: 2px;
+  text-align: center;
+  background: rgba(255,255,255,0.85);
+  color: #222;
+  font-weight: bold;
+  border-radius: 8px;
+  padding: 2px 10px;
+  box-shadow: 0 2px 8px 0 rgba(0,0,0,0.07);
+  letter-spacing: 0.5px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s cubic-bezier(0.4,0,0.2,1);
+}
+.sidebar:hover .menu-item .label {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.sidebar-danger .menu-item .icon {
+  filter: drop-shadow(0 0 8px #ff1744) drop-shadow(0 0 16px #8e24aa);
+}
+.sidebar-normal .menu-item .icon {
+  filter: drop-shadow(0 0 8px #ffe066) drop-shadow(0 0 16px #ff9800);
+}
+.sidebar-healthy .menu-item .icon {
+  filter: drop-shadow(0 0 8px #00e676) drop-shadow(0 0 16px #2196f3);
+}
+
+/* Efecto de escala al hacer hover en los íconos */
+.menu-item .icon {
+  display: inline-block;
+  transition: transform 0.25s cubic-bezier(0.4,0,0.2,1);
+}
+.menu-item:hover .icon {
+  transform: scale(1.25) rotate(-8deg);
+}
+
+/* Responsive: sidebar se mantiene sticky y ocupa todo el alto */
+@media (max-width: 900px) {
+  .sidebar {
+    min-height: 100vh;
+    height: 100vh;
+    width: 50px;
+  }
+}
+@media (max-width: 600px) {
+  .sidebar {
+    min-height: 100vh;
+    height: 100vh;
+    width: 40px;
+    padding-top: 4px;
+    gap: 10px;
+  }
+  .menu-item {
+    font-size: 18px;
+    padding: 6px;
+  }
+  .icon {
+    width: 28px;
+    height: 28px;
+  }
+}

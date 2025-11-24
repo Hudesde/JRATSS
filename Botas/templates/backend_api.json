@@ -1,0 +1,60 @@
+{
+  "name": "Backend - API REST",
+  "description": "Estructura de backend con Node.js/Express para API REST",
+  "structure": [
+    "src",
+    "src/controllers",
+    "src/models",
+    "src/routes",
+    "src/middleware",
+    "src/services",
+    "src/utils",
+    "src/config",
+    "tests",
+    "tests/unit",
+    "tests/integration"
+  ],
+  "features": {
+    "auth": [
+      "src/controllers/authController.js",
+      "src/routes/authRoutes.js",
+      "src/middleware/authMiddleware.js",
+      "src/services/authService.js"
+    ],
+    "productos": [
+      "src/controllers/productController.js",
+      "src/models/Product.js",
+      "src/routes/productRoutes.js",
+      "src/services/productService.js"
+    ],
+    "ventas": [
+      "src/controllers/saleController.js",
+      "src/models/Sale.js",
+      "src/routes/saleRoutes.js",
+      "src/services/saleService.js"
+    ],
+    "usuarios": [
+      "src/controllers/userController.js",
+      "src/models/User.js",
+      "src/routes/userRoutes.js",
+      "src/services/userService.js"
+    ],
+    "reportes": [
+      "src/controllers/reportController.js",
+      "src/routes/reportRoutes.js",
+      "src/services/reportService.js"
+    ]
+  },
+  "base_files": [
+    "package.json",
+    "README.md",
+    ".gitignore",
+    ".env.example",
+    "src/app.js",
+    "src/server.js",
+    "src/config/database.js",
+    "src/middleware/errorHandler.js",
+    "src/middleware/logger.js",
+    "src/utils/validators.js"
+  ]
+}
