@@ -1,0 +1,384 @@
+==========================================================
+INFORMACIÓN PARA DIAGRAMA DE ARQUITECTURA BACKEND-MYSQL
+==========================================================
+Fecha: 21 de noviembre de 2025
+Proyecto: CharlesTherapy
+
+==========================================================
+1. CONTROLADORES (ARCHIVOS .TS)
+==========================================================
+
+Ubicación: backend/src/controllers/
+
+1. bigfiveController.ts
+   - Funciones: crearResultado, obtenerResultadosPorUsuario, actualizarResultado, eliminarResultado
+
+2. citaController.ts
+   - Funciones: crearCita, obtenerCitasPorPaciente, obtenerCitasPorEspecialista, etc.
+
+3. observacionController.ts
+   - Funciones: crearObservacion, obtenerObservaciones, actualizarObservacion, eliminarObservacion
+
+4. resultadosTestController.ts
+   - Funciones: crearResultado, obtenerResultadosPorUsuario, actualizarResultado, eliminarResultado
+
+5. resumenController.ts
+   - Funciones: crearResumen, obtenerResumenesPorUsuario, obtenerResumenPorFecha
+
+6. sesionChatController.ts
+   - Funciones: crearSesion, actualizarSesion, obtenerSesionesPorUsuario, obtenerSesionPorId, obtenerSesionesPorUsuarioYFecha
+
+7. usuariosController.ts
+   - Funciones: login, crearUsuario, obtenerUsuarios, obtenerUsuarioPorId, actualizarUsuario, eliminarUsuario
+
+8. chatController.ts (nuevo - IA)
+   - Funciones: chat, obtenerRecomendacionEspecialista, obtenerTipoEspecialista
+
+==========================================================
+2. MODELOS/INTERFACES TYPESCRIPT
+==========================================================
+
+Ubicación: backend/src/model/
+
+1. bigfiveModel.ts
+   Interface: BigFiveResult
+   {
+     id_resultado: number,
+     id_usuario: number,
+     neuroticismo: number,
+     extraversion: number,
+     apertura: number,
+     amabilidad: number,
+     responsabilidad: number,
+     fecha: Date
+   }
+
+2. citaModel.ts
+   Interface: Cita
+   {
+     id_cita: number,
+     id_paciente: number,
+     id_especialista: number,
+     fecha: string,
+     hora: string,
+     motivo: string,
+     estado: 'pendiente' | 'confirmada' | 'cancelada',
+     fecha_creacion: Date
+   }
+
+3. resultadosTestModel.ts
+   Interface: ResultadoTest
+   {
+     id_resultado: number,
+     id_usuario: number,
+     id_test: number,
+     respuestas: string,
+     puntaje: number,
+     fecha: Date
+   }
+
+4. resumenModel.ts
+   Interface: Resumen
+   {
+     id_resumen: number,
+     id_usuario: number,
+     fecha: string,
+     contenido: string,
+     resumen: string,
+     fecha_creacion: Date
+   }
+
+5. sesionChatModel.ts
+   Interface: SesionChat
+   {
+     id_sesion: number,
+     id_usuario: number,
+     contenido: string (JSON stringificado),
+     fecha_creacion: Date
+   }
+
+Nota: No hay modelo explícito para usuarios, se manejan directamente en el controlador.
+
+==========================================================
+3. ENDPOINTS REST EXPUESTOS
+==========================================================
+
+Base URL: http://localhost:3000/api
+
+--- USUARIOS ---
+POST   /api/usuarios/login
+POST   /api/usuarios
+GET    /api/usuarios
+GET    /api/usuarios/:id
+PUT    /api/usuarios/:id
+DELETE /api/usuarios/:id
+
+--- BIG FIVE ---
+POST   /api/bigfive
+GET    /api/bigfive/:id_usuario
+PUT    /api/bigfive/:id_resultado
+DELETE /api/bigfive/:id_resultado
+
+--- CITAS ---
+POST   /api/citas
+GET    /api/citas/paciente/:id_paciente
+GET    /api/citas/especialista/:id_especialista
+PUT    /api/citas/:id_cita
+DELETE /api/citas/:id_cita
+
+--- OBSERVACIONES ---
+POST   /api/observaciones
+GET    /api/observaciones
+GET    /api/observaciones/:id_observacion
+PUT    /api/observaciones/:id_observacion
+DELETE /api/observaciones/:id_observacion
+
+--- RESULTADOS TEST ---
+POST   /api/resultados
+GET    /api/resultados/usuario/:id_usuario
+PUT    /api/resultados/:id_resultado
+DELETE /api/resultados/:id_resultado
+
+--- SESIONES DE CHAT ---
+POST   /api/sesiones
+PUT    /api/sesiones/:id_sesion
+GET    /api/sesiones/usuario/:id_usuario
+GET    /api/sesiones/:id_sesion
+GET    /api/sesiones/usuario/:id_usuario/fecha (query: ?fecha=YYYY-MM-DD)
+
+--- RESUMEN ---
+POST   /api/resumen
+GET    /api/resumen/usuario/:id_usuario
+GET    /api/resumen/usuario/:id_usuario/fecha/:fecha
+
+--- CHAT IA ---
+POST   /api/chat
+POST   /api/chat/recomendacion-especialista
+POST   /api/chat/tipo-especialista
+
+==========================================================
+4. CONEXIÓN A MySQL
+==========================================================
+
+¿Usa mysql2/promise? NO
+Usa: mysql2 (versión callback convertida a promesas con util.promisify)
+
+Archivo de conexión: backend/src/dataBase.ts
+
+Nombre de la clase/pool: pool (default export)
+
+Código:
+```typescript
+import mysql from 'mysql2';
+import dotenv from 'dotenv';
+
+dotenv.config();
+
+const pool = mysql.createPool({
+  host: process.env.DB_HOST || 'localhost',
+  user: process.env.DB_USER || 'root',
+  password: process.env.DB_PASSWORD || '',
+  database: process.env.DB_NAME || 'charlestherapy',
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0
+});
+
+export default pool;
+```
+
+Uso en controladores:
+```typescript
+import pool from '../dataBase';
+
+// Ejemplo:
+const [rows] = await pool.execute('SELECT * FROM usuarios WHERE id_usuario = ?', [id]);
+```
+
+==========================================================
+5. ESTRUCTURA DE LA BASE DE DATOS (TABLAS)
+==========================================================
+
+Base de datos: charlestherapy
+
+Tablas principales:
+
+1. usuarios
+   - id_usuario (INT, PK, AUTO_INCREMENT)
+   - usuario (VARCHAR)
+   - correo (VARCHAR)
+   - password (VARCHAR)
+   - rol (ENUM: 'Paciente', 'Especialista')
+   - bigFive (TINYINT: 0 = no completado, 1 = completado)
+   - cedula (VARCHAR, nullable)
+   - especialidad (VARCHAR, nullable)
+
+2. bigfive
+   - id_resultado (INT, PK, AUTO_INCREMENT)
+   - id_usuario (INT, FK -> usuarios)
+   - neuroticismo (DECIMAL)
+   - extraversion (DECIMAL)
+   - apertura (DECIMAL)
+   - amabilidad (DECIMAL)
+   - responsabilidad (DECIMAL)
+   - fecha (DATETIME, DEFAULT CURRENT_TIMESTAMP)
+
+3. cita
+   - id_cita (INT, PK, AUTO_INCREMENT)
+   - id_paciente (INT, FK -> usuarios)
+   - id_especialista (INT, FK -> usuarios)
+   - fecha (DATE)
+   - hora (TIME)
+   - motivo (TEXT)
+   - estado (ENUM: 'pendiente', 'confirmada', 'cancelada')
+   - fecha_creacion (DATETIME, DEFAULT CURRENT_TIMESTAMP)
+
+4. mensajes
+   (estructura por confirmar, posiblemente para chat interno)
+
+5. observaciones
+   - id_observacion (INT, PK, AUTO_INCREMENT)
+   - id_usuario (INT, FK -> usuarios)
+   - observacion (TEXT)
+   - fecha (DATETIME, DEFAULT CURRENT_TIMESTAMP)
+
+6. sesiones
+   - id_sesion (INT, PK, AUTO_INCREMENT)
+   - id_usuario (INT, FK -> usuarios)
+   - contenido (TEXT: JSON stringificado con mensajes del chat)
+   - fecha_creacion (DATETIME, DEFAULT CURRENT_TIMESTAMP)
+
+7. resumen (tabla opcional para resúmenes diarios/semanales)
+   - id_resumen (INT, PK, AUTO_INCREMENT)
+   - id_usuario (INT, FK -> usuarios)
+   - fecha (DATE)
+   - contenido (TEXT)
+   - resumen (TEXT)
+   - fecha_creacion (DATETIME, DEFAULT CURRENT_TIMESTAMP)
+
+==========================================================
+6. SCRIPTS SQL DISPONIBLES
+==========================================================
+
+Ubicación: backend/sql/
+
+1. crear_tabla_sesiones.sql
+   - Crea tabla 'sesiones' para almacenar chats
+
+2. crear_tabla_resumen.sql
+   - Crea tabla 'resumen' para resúmenes de sesiones
+
+Script principal de base de datos:
+- charlestherapy.sql (en raíz del proyecto)
+
+==========================================================
+7. FLUJO DE DATOS (EJEMPLO: CREAR SESIÓN DE CHAT)
+==========================================================
+
+1. Frontend hace POST a /api/sesiones
+   Body: { id_usuario: 11, contenido: "[{role:'user', content:'Hola'}]" }
+
+2. Express enruta a sesionChatRoutes
+
+3. sesionChatRoutes llama a sesionChatController.crearSesion
+
+4. crearSesion valida datos y ejecuta:
+   await pool.execute(
+     'INSERT INTO sesiones (id_usuario, contenido) VALUES (?, ?)',
+     [id_usuario, contenido]
+   )
+
+5. MySQL inserta el registro y devuelve insertId
+
+6. Controlador responde con JSON:
+   { message: 'Sesión creada', id_sesion: 123 }
+
+7. Frontend recibe la respuesta y guarda id_sesion
+
+==========================================================
+8. CONFIGURACIÓN DEL SERVIDOR
+==========================================================
+
+Archivo principal: backend/src/index.ts
+
+Clase: Server
+- Configura puerto (3000)
+- Configura CORS (origin: '*' en desarrollo)
+- Middlewares: morgan (logging), express.json, express.urlencoded
+- Registra todas las rutas bajo /api
+
+Archivo de rutas (ejemplo):
+backend/src/routes/sesionChatRoutes.ts
+```typescript
+import { Router } from 'express';
+import { crearSesion, actualizarSesion, ... } from '../controllers/sesionChatController';
+
+const router = Router();
+
+router.post('/', crearSesion);
+router.put('/:id_sesion', actualizarSesion);
+router.get('/usuario/:id_usuario', obtenerSesionesPorUsuario);
+// ... más rutas
+
+export default router;
+```
+
+==========================================================
+9. VARIABLES DE ENTORNO (.env)
+==========================================================
+
+Archivo: backend/.env
+
+Variables para MySQL:
+DB_HOST=localhost
+DB_USER=root
+DB_PASSWORD=
+DB_NAME=charlestherapy
+PORT=3000
+
+Variables para IA:
+AI_PROVIDER=openai
+OPENAI_API_KEY=sk-proj-...
+OPENAI_MODEL=gpt-4o
+OPENAI_BASE_URL=https://api.openai.com/v1
+
+LM_STUDIO_BASE_URL=http://localhost:1234/v1
+LM_STUDIO_API_KEY=lm-studio
+LM_STUDIO_MODEL=local-model
+
+==========================================================
+10. DEPENDENCIAS PRINCIPALES (package.json)
+==========================================================
+
+Producción:
+- express: Framework web
+- mysql2: Driver MySQL
+- dotenv: Variables de entorno
+- cors: Manejo de CORS
+- morgan: Logging de peticiones HTTP
+- openai: Cliente para OpenAI/LM Studio
+
+Desarrollo:
+- typescript: Compilador TS
+- @types/express, @types/node, etc.: Definiciones de tipos
+- nodemon: Reinicio automático en desarrollo
+- ts-node: Ejecutar TS directamente
+
+==========================================================
+11. COMPILACIÓN Y EJECUCIÓN
+==========================================================
+
+Scripts disponibles:
+- npm run dev: Inicia con nodemon (desarrollo)
+- npm run build: Compila TS a JS (carpeta build/)
+- npm start: Ejecuta build/index.js
+
+Proceso de compilación:
+1. tsconfig.json define opciones de compilación
+2. tsc compila .ts a .js en src/build/
+3. nodemon ejecuta src/build/index.js
+4. En producción, ejecutar directamente node src/build/index.js
+
+==========================================================
+FIN DEL INFORME
+==========================================================

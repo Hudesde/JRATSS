@@ -1,0 +1,116 @@
+@startuml cap3_diagrama_flujo_voz
+
+title Sistema de Voz a Terminal - Botas (Asistente de Archivos)
+
+skinparam rectangle {
+    BackgroundColor #E3F2FD
+    BorderColor #1976D2
+    FontSize 12
+}
+
+skinparam note {
+    BackgroundColor #FFF9C4
+    BorderColor #F57C00
+}
+
+' Capa 1: STT (Speech-to-Text)
+rectangle "**CAPA 1: SPEECH-TO-TEXT (STT)**" as stt #C8E6C9 {
+    rectangle "Micrófono del Usuario" as mic #E8F5E9
+    rectangle "SoX Audio Recorder\n(record_audio)" as sox #C8E6C9
+    rectangle "OpenAI Whisper API\n(transcribe)" as whisper #A5D6A7
+    rectangle "Texto Transcrito" as text1 #E8F5E9
+    
+    mic -down-> sox: Captura audio
+    sox -down-> whisper: Envía WAV\n(API Request)
+    whisper -down-> text1: Retorna texto:\n"Crea carpeta proyectos"
+}
+
+note right of whisper
+  **Modelo:** whisper-1
+  **Formato:** WAV
+  **Idioma:** español
+  **Timeout:** 30s
+end note
+
+' Capa 2: NLP (Procesamiento)
+rectangle "**CAPA 2: NATURAL LANGUAGE PROCESSING (NLP)**" as nlp #FFE082 {
+    rectangle "CommandParser.pm\n(parse)" as parser #FFD54F
+    rectangle "OpenAI GPT-4 API\n(Chat Completions)" as gpt4 #FFC107
+    rectangle "Estructura JSON" as json #FFF9C4
+    
+    text1 -down-> parser: Texto natural
+    parser -down-> gpt4: Prompt + Contexto
+    gpt4 -down-> json: {\n  action: "create",\n  target_type: "directory",\n  target_path: "proyectos"\n}
+}
+
+note right of gpt4
+  **Modelo:** gpt-4
+  **Prompt:** Sistema especializado
+  **Output:** JSON estructurado
+  **Acciones:** create, list, search,
+  move, rename, delete, info
+end note
+
+' Capa 3: Ejecución
+rectangle "**CAPA 3: EJECUCIÓN DE COMANDOS**" as exec #FFCCBC {
+    rectangle "FileManager.pm" as fm #FF9800
+    rectangle "Validación de Seguridad\n(_validate_path)" as valid #FFB74D
+    rectangle "File::Path / File::Find::Rule\nOperaciones Filesystem" as fileops #FFA726
+    rectangle "Resultado de Ejecución" as result #FFE0B2
+    
+    json -down-> fm: Comando JSON
+    fm -down-> valid: Valida rutas permitidas
+    valid -down-> fileops: make_path()\ncopy(), move(), remove_tree()
+    fileops -down-> result: Status: success/error\nMensaje: "Directorio creado"
+}
+
+note right of valid
+  **Seguridad:**
+  - Solo allowed_dirs
+  - No path traversal
+  - Límite 100 archivos
+  - Confirmación para delete
+end note
+
+' Capa 4: TTS (Text-to-Speech)
+rectangle "**CAPA 4: TEXT-TO-SPEECH (TTS)**" as tts #E1BEE7 {
+    rectangle "TTS.pm\n(speak)" as ttspm #CE93D8
+    rectangle "eSpeak\nSíntesis de Voz" as espeak #BA68C8
+    rectangle "Audio Output\n(Altavoces)" as audio #F3E5F5
+    
+    result -down-> ttspm: Mensaje de respuesta
+    ttspm -down-> espeak: Texto a voz\n(fork asíncrono)
+    espeak -down-> audio: "Directorio creado:\nproyectos"
+}
+
+note right of espeak
+  **Motor:** eSpeak
+  **Idioma:** español
+  **Ejecución:** Asíncrona (fork)
+  **Velocidad:** Configurable
+end note
+
+' Interfaz Gráfica (lateral)
+rectangle "**GUI Perl/Tk**" as gui #B3E5FC {
+    [🎤 Botón Grabar]
+    [📝 Área Transcripción]
+    [🔍 Comando JSON]
+    [📋 Log de Actividad]
+    [✅ Confirmar / ❌ Cancelar]
+}
+
+gui -right-> mic: Click usuario
+text1 -left-> gui: Muestra transcripción
+json -left-> gui: Muestra comando
+result -left-> gui: Actualiza log
+
+' Flujo temporal
+note bottom
+  **Tiempo total por comando:** ~5-10 segundos
+  - STT (Whisper): 2-5 seg
+  - NLP (GPT-4): 1-3 seg
+  - Ejecución: <1 seg
+  - TTS (eSpeak): 1-2 seg
+end note
+
+@enduml

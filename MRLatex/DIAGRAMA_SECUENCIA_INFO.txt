@@ -1,0 +1,196 @@
+==========================================================
+INFORMACIÓN PARA DIAGRAMA DE SECUENCIA - CHATBOT
+==========================================================
+Fecha: 21 de noviembre de 2025
+Proyecto: CharlesTherapy
+
+==========================================================
+1. COMPONENTES ANGULAR (FRONTEND)
+==========================================================
+
+Componentes que usan el chatbot:
+- ChatbotModalComponent (principal)
+  Ubicación: frontend/src/app/components/chatbot-modal/chatbot-modal.component.ts
+  
+- PrincipalComponent (con modal de chat)
+  Ubicación: frontend/src/app/components/principal/principal.component.ts
+  
+- ChatbotComponent (página completa)
+  Ubicación: frontend/src/app/components/chatbot/chatbot.component.ts
+  
+- HistorialComponent (con modal de chat)
+  Ubicación: frontend/src/app/components/historial/historial.component.ts
+
+==========================================================
+2. SERVICIO ANGULAR (FRONTEND)
+==========================================================
+
+Nombre: OpenAIService
+Ubicación: frontend/src/services/openai.service.ts
+
+Métodos principales:
+- chat(messages: ChatMessage[]): Promise<string>
+- obtenerRecomendacionEspecialista(bigFive): Promise<string>
+- obtenerTipoEspecialista(bigFive, especialidades): Promise<string>
+
+Interfaz ChatMessage:
+{
+  role: 'system' | 'user' | 'assistant',
+  content: string
+}
+
+==========================================================
+3. ENDPOINTS DEL BACKEND
+==========================================================
+
+Base URL: http://localhost:3000/api
+
+Endpoints de chat:
+1. POST /api/chat
+   - Descripción: Chat general con IA
+   - Body: { messages: ChatMessage[] }
+   - Response: { message: string }
+
+2. POST /api/chat/recomendacion-especialista
+   - Descripción: Recomendación de especialista basada en Big Five
+   - Body: { bigFive: { neuroticismo, extraversion, apertura, amabilidad, responsabilidad } }
+   - Response: { recomendacion: string }
+
+3. POST /api/chat/tipo-especialista
+   - Descripción: Tipo específico de especialista de una lista
+   - Body: { bigFive: {...}, especialidades: string[] }
+   - Response: { especialista: string }
+
+==========================================================
+4. ESTRUCTURA DE RESPUESTAS JSON
+==========================================================
+
+Endpoint: POST /api/chat
+Request:
+{
+  "messages": [
+    { "role": "system", "content": "Eres un asistente..." },
+    { "role": "user", "content": "Hola" },
+    { "role": "assistant", "content": "Hola, ¿en qué puedo ayudarte?" },
+    { "role": "user", "content": "Necesito ayuda" }
+  ]
+}
+
+Response (Éxito - 200):
+{
+  "message": "Claro, estoy aquí para ayudarte. ¿Qué necesitas?"
+}
+
+Response (Error - 500):
+{
+  "error": "Error al procesar chat",
+  "detalle": "mensaje de error específico"
+}
+
+---
+
+Endpoint: POST /api/chat/recomendacion-especialista
+Request:
+{
+  "bigFive": {
+    "neuroticismo": 3.5,
+    "extraversion": 2.8,
+    "apertura": 4.2,
+    "amabilidad": 3.9,
+    "responsabilidad": 4.5
+  }
+}
+
+Response (Éxito - 200):
+{
+  "recomendacion": "Basado en tu perfil psicométrico, recomendaría un psicólogo clínico especializado en..."
+}
+
+---
+
+Endpoint: POST /api/chat/tipo-especialista
+Request:
+{
+  "bigFive": {
+    "neuroticismo": 3.5,
+    "extraversion": 2.8,
+    "apertura": 4.2,
+    "amabilidad": 3.9,
+    "responsabilidad": 4.5
+  },
+  "especialidades": [
+    "Psicología Clínica",
+    "Psicología Educativa",
+    "Psicología Organizacional",
+    "Neuropsicología"
+  ]
+}
+
+Response (Éxito - 200):
+{
+  "especialista": "Psicología Clínica"
+}
+
+==========================================================
+5. BACKEND - CONTROLADORES Y SERVICIOS
+==========================================================
+
+Controlador: chatController.ts
+Ubicación: backend/src/controllers/chatController.ts
+
+Servicio de IA: aiService.ts
+Ubicación: backend/src/services/aiService.ts
+
+Configuración:
+- Proveedor se configura en: backend/.env
+- Variable: AI_PROVIDER (valores: 'openai' o 'lmstudio')
+
+Para OpenAI:
+- OPENAI_API_KEY=sk-proj-...
+- OPENAI_MODEL=gpt-4o
+- OPENAI_BASE_URL=https://api.openai.com/v1
+
+Para LM Studio:
+- LM_STUDIO_BASE_URL=http://localhost:1234/v1
+- LM_STUDIO_API_KEY=lm-studio
+- LM_STUDIO_MODEL=local-model
+
+==========================================================
+6. FLUJO DE SECUENCIA GENERAL
+==========================================================
+
+1. Usuario escribe mensaje en ChatbotModalComponent
+2. Componente llama a OpenAIService.chat(messages)
+3. OpenAIService hace HTTP POST a /api/chat
+4. Backend recibe petición en chatController.chat()
+5. Controlador llama a aiService.chat(messages)
+6. aiService decide si usar OpenAI o LM Studio según AI_PROVIDER
+7. aiService hace petición a la API correspondiente
+8. API responde con el mensaje generado
+9. Backend devuelve JSON: { message: "respuesta" }
+10. OpenAIService extrae message del JSON
+11. Componente recibe string y lo muestra al usuario
+
+==========================================================
+7. TECNOLOGÍAS USADAS
+==========================================================
+
+Frontend:
+- Angular 19 (standalone components)
+- TypeScript
+- HttpClient (peticiones HTTP)
+- RxJS (observables convertidos a Promise con firstValueFrom)
+
+Backend:
+- Node.js + Express
+- TypeScript
+- Librería: openai (npm)
+- Base de datos: MySQL (para guardar sesiones)
+
+APIs externas:
+- OpenAI API (gpt-4o)
+- LM Studio local (compatible con OpenAI API)
+
+==========================================================
+FIN DEL INFORME
+==========================================================

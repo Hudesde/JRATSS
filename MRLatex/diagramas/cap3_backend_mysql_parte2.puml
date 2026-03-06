@@ -1,0 +1,97 @@
+@startuml cap3_backend_mysql_parte2
+
+title Arquitectura Backend Express - Parte 2: Servicios, Modelos y Base de Datos
+
+skinparam rectangle {
+    BackgroundColor #E3F2FD
+    BorderColor #1976D2
+    FontSize 11
+}
+
+skinparam component {
+    BackgroundColor #BBDEFB
+    BorderColor #1565C0
+}
+
+skinparam database {
+    BackgroundColor #FFF9C4
+    BorderColor #F57C00
+}
+
+skinparam note {
+    BackgroundColor #FFF9C4
+    BorderColor #F57C00
+    FontSize 10
+}
+
+' Orientación vertical
+top to bottom direction
+
+' Controladores (referencia de Parte 1)
+rectangle "**CONTROLADORES**\n(desde Parte 1)" as controllers #FFE082
+
+' Servicios
+rectangle "**SERVICIOS**" as services_block #C8E6C9 {
+    component "aiService.ts\n(OpenAI SDK compatible)" as ai #A5D6A7
+    note right of ai
+      • LM Studio local (:1234)
+      • OpenAI API (cloud)
+      • Mismo código, distinta config
+    end note
+}
+
+' Modelos TypeScript
+rectangle "**MODELOS / INTERFACES TypeScript**" as models #E1BEE7 {
+    component "Usuario" as m1 #CE93D8
+    component "SesionChat" as m2 #CE93D8
+    component "Mensaje" as m3 #CE93D8
+    component "BigFiveResult" as m4 #CE93D8
+    component "Cita" as m5 #CE93D8
+    component "Observacion" as m6 #CE93D8
+    component "Resumen" as m7 #CE93D8
+}
+
+' Pool de conexiones
+rectangle "**CAPA DE DATOS**" as data_layer #FFECB3 {
+    component "dataBase.ts\nmysql2 Pool" as pool #FFD54F
+    note right of pool
+      **Configuración:**
+      host: localhost
+      user: root
+      database: charlestherapy
+      connectionLimit: 10
+    end note
+}
+
+' Base de datos MySQL
+database "**MySQL 8.0**\ncharlestherapy" as mysql {
+    rectangle "Tablas (7)" as tables #FFF9C4 {
+        [usuarios] as t1
+        [sesiones] as t2
+        [mensajes] as t3
+        [bigfive] as t4
+        [cita] as t5
+        [observaciones] as t6
+        [resumen] as t7
+    }
+}
+
+' Conexiones
+controllers -down-> services_block: usa
+controllers -down-> models: implementa
+controllers -down-> pool: SQL queries
+
+services_block -down-> pool: execute()
+
+pool -down-> mysql: Conexión TCP\n(3306)
+
+note bottom of mysql
+  **Relaciones FK (ON DELETE CASCADE):**
+  • sesiones.id_usuario → usuarios.id_usuario
+  • bigfive.id_usuario → usuarios.id_usuario
+  • cita.id_paciente → usuarios.id_usuario
+  • cita.id_especialista → usuarios.id_usuario
+  • mensajes.id_sesion → sesiones.id_sesion
+end note
+
+@enduml

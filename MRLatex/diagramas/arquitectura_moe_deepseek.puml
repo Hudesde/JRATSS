@@ -1,0 +1,54 @@
+@startuml arquitectura_moe_deepseek
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontSize 11
+skinparam ArrowColor #2C3E50
+skinparam shadowing false
+
+title Arquitectura Mixture of Experts (MoE) - DeepSeek-R1
+
+rectangle "ENTRADA DE TOKENS\n(Secuencia del prompt)" as input #E8F4F8
+
+rectangle "ROUTER\n(Gating Network)\nSelecciona expertos\nsegun contexto" as router #FFE5CC
+
+rectangle "EXPERTO 1\n(ACTIVO)\nPeso: 0.7" as expert1 #C8E6C9
+rectangle "EXPERTO 2\n(Inactivo)\nPeso: 0.0" as expert2 #E0E0E0
+rectangle "EXPERTO 3\n(ACTIVO)\nPeso: 0.3" as expert3 #C8E6C9
+rectangle "EXPERTO 4\n(Inactivo)\nPeso: 0.0" as expert4 #E0E0E0
+rectangle "... N EXPERTOS ...\n(Inactivos)" as expertN #E0E0E0
+
+rectangle "COMBINACION PONDERADA\nAgregacion de salidas\nde expertos activos" as combine #FFF9C4
+
+rectangle "SALIDA\nPrediccion del\nsiguiente token" as output #E1BEE7
+
+input -down-> router : Analiza tokens
+
+router -down-> expert1 : Activa (70%)
+router -down-> expert2 : Desactiva
+router -down-> expert3 : Activa (30%)
+router -down-> expert4 : Desactiva
+router -down-> expertN : Desactiva
+
+expert1 -down-> combine : Salida 1
+expert3 -down-> combine : Salida 3
+
+combine -down-> output : Token final
+
+note right of router
+  Solo 2-3 expertos
+  se activan por token
+end note
+
+note bottom of combine
+  **Eficiencia:**
+  - Solo 37B parámetros activos
+  - de 671B totales (~80% ahorro)
+  - Mantiene alta capacidad
+end note
+
+legend top right
+  **Leyenda**
+  Verde = Activo
+  Gris = Inactivo
+end legend
+
+@enduml

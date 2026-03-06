@@ -1,0 +1,33 @@
+@startuml metodos_aprendizaje_ia_parte1
+
+title Métodos de Aprendizaje en IA - Parte 1: Enfoques Fundamentales
+
+skinparam rectangle {
+    BackgroundColor #E3F2FD
+    BorderColor #1976D2
+    FontSize 11
+    FontStyle bold
+}
+
+skinparam defaultTextAlignment center
+
+' 3 métodos fundamentales
+rectangle "1. APRENDIZAJE SUPERVISADO\n\nDatos etiquetados (X, y) conocidos\nEjemplos: Clasificación, Regresión\nAlgoritmos: SVM, Random Forest, Neural Nets\nVentaja: Alta precisión\nDesventaja: Requiere etiquetado manual" as SUP #C8E6C9
+
+rectangle "2. APRENDIZAJE NO SUPERVISADO\n\nSin etiquetas, descubre patrones ocultos\nEjemplos: Clustering, Reducción dimensional\nAlgoritmos: K-means, DBSCAN, PCA\nVentaja: No requiere etiquetado\nDesventaja: Resultados difíciles de evaluar" as UNSUP #FFE082
+
+rectangle "3. APRENDIZAJE POR REFUERZO\n\nAgente aprende mediante recompensas\nEjemplos: AlphaGo, Robótica, Videojuegos\nAlgoritmos: Q-Learning, PPO, DQN\nVentaja: Adaptación dinámica\nDesventaja: Requiere simulación/entorno" as RL #FFCCBC
+
+' Flujo vertical
+SUP -down-> UNSUP
+UNSUP -down-> RL
+
+' Leyenda compacta
+legend bottom right
+  |= Color |= Método |
+  |<#C8E6C9> | Supervisado |
+  |<#FFE082> | No Supervisado |
+  |<#FFCCBC> | Refuerzo |
+endlegend
+
+@enduml

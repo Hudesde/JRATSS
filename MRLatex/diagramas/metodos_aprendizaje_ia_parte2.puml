@@ -1,0 +1,29 @@
+@startuml metodos_aprendizaje_ia_parte2
+
+title Métodos de Aprendizaje en IA - Parte 2: Enfoques Híbridos y Avanzados
+
+skinparam rectangle {
+    BackgroundColor #E3F2FD
+    BorderColor #1976D2
+    FontSize 11
+    FontStyle bold
+}
+
+skinparam defaultTextAlignment center
+
+' 2 métodos híbridos/avanzados
+rectangle "4. APRENDIZAJE SEMI-SUPERVISADO\n\nCombina datos etiquetados + no etiquetados\nEjemplos: Transcripción, OCR con datos limitados\nAlgoritmos: Self-training, Co-training\nVentaja: Reduce costo de etiquetado\nDesventaja: Puede propagar errores" as SEMI #E1BEE7
+
+rectangle "5. APRENDIZAJE AUTO-SUPERVISADO\n\nAutogeneración de tareas supervisadas\nEjemplos: BERT (masked tokens), GPT (next token)\nAlgoritmos: Transformers, Contrastive Learning\nVentaja: Escala masiva sin etiquetas\nDesventaja: Requiere gran capacidad computacional" as SELF #B2DFDB
+
+' Flujo vertical
+SEMI -down-> SELF
+
+' Leyenda compacta
+legend bottom right
+  |= Color |= Método |
+  |<#E1BEE7> | Semi-supervisado |
+  |<#B2DFDB> | Auto-supervisado |
+endlegend
+
+@enduml

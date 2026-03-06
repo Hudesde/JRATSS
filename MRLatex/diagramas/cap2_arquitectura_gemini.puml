@@ -1,0 +1,59 @@
+@startuml cap2_arquitectura_gemini
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontSize 11
+skinparam ArrowColor #2C3E50
+skinparam shadowing false
+
+title Arquitectura Gemini (Google DeepMind)
+
+rectangle "ENTRADA MULTIMODAL\nTexto | Imagen | Audio\nVideo | Código" as input #E8F4F8
+
+package "ENCODERS ESPECIALIZADOS" as encoders #FFF9C4 {
+    rectangle "Encoder\nTexto" as enc_text #FFFFFF
+    rectangle "Encoder\nVisión" as enc_vision #FFFFFF
+    rectangle "Encoder\nAudio" as enc_audio #FFFFFF
+    rectangle "Encoder\nVideo" as enc_video #FFFFFF
+}
+
+rectangle "FUSIÓN MULTIMODAL\nRepresentación unificada\nCross-modal attention" as fusion #E1BEE7
+
+package "TRANSFORMER NATIVO MULTIMODAL" as transformer #F5F5F5 {
+    rectangle "ATENCIÓN MULTI-CABEZA\nContexto 1M+ tokens\nRazonamiento cruzado" as attention #C8E6C9
+    
+    rectangle "FEED-FORWARD\nCapas especializadas\npor modalidad" as ffn #C8E6C9
+    
+    rectangle "DECODERS\nGeneración multimodal\nSalida flexible" as decoders #C8E6C9
+}
+
+rectangle "SALIDA\nTexto | Código | Análisis\nRespuesta integrada" as output #E8F4F8
+
+input -down-> encoders
+enc_text -down-> fusion
+enc_vision -down-> fusion
+enc_audio -down-> fusion
+enc_video -down-> fusion
+fusion -down-> attention
+attention -down-> ffn
+ffn -down-> decoders
+decoders -down-> output
+
+note right of fusion
+  **Multimodalidad Nativa:**
+  - Diseñado desde cero
+  - No es extensión posterior
+  - Transferencia fluida
+end note
+
+note bottom of transformer
+  **Variantes:**
+  Ultra (tareas complejas) | Pro (equilibrio) | Nano (móviles)
+end note
+
+legend top right
+  **Características Clave**
+  Multimodal desde diseño
+  Contexto 1M+ tokens
+  Integración ecosistema Google
+end legend
+
+@enduml

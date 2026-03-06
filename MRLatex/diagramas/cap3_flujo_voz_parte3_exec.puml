@@ -1,0 +1,63 @@
+@startuml cap3_flujo_voz_parte3_exec
+
+title Sistema Botas - Parte 3: Ejecución de Comandos
+
+skinparam rectangle {
+    BackgroundColor #E3F2FD
+    BorderColor #1976D2
+    FontSize 12
+}
+
+skinparam note {
+    BackgroundColor #FFF9C4
+    BorderColor #F57C00
+}
+
+' Capa 3: Ejecución
+rectangle "**CAPA 3: EJECUCIÓN DE COMANDOS**" as exec #FFCCBC {
+    rectangle "Comando JSON" as input #FFE0B2
+    rectangle "FileManager.pm" as fm #FF9800
+    rectangle "Validación de Seguridad\n(_validate_path)" as valid #FFB74D
+    rectangle "File::Path / File::Find::Rule\nOperaciones Filesystem" as fileops #FFA726
+    rectangle "Resultado" as result #FFE0B2
+    
+    input -down-> fm: Comando JSON
+    fm -down-> valid: Valida rutas\npermitidas
+    valid -down-> fileops: Ejecuta operación:\nmake_path(), copy(),\nmove(), remove_tree()
+    fileops -down-> result: Status: success/error\nMensaje descriptivo
+}
+
+note right of valid
+  **Medidas de Seguridad:**
+  - Solo allowed_dirs configurados
+  - No path traversal (../)
+  - Límite 100 archivos por operación
+  - Confirmación obligatoria para delete
+  - Sandbox de directorio base
+end note
+
+note bottom of result
+  **Ejemplos de respuesta:**
+  - "Directorio creado: /home/user/proyectos"
+  - "Error: Ruta no permitida"
+  - "Encontrados 15 archivos .txt"
+end note
+
+' Interfaz
+rectangle "**GUI Perl/Tk**" as gui #B3E5FC {
+    [✅ Confirmar]
+    [❌ Cancelar]
+    [📋 Log]
+}
+
+result -left-> gui: Actualiza\nestado
+gui -right-> valid: Confirmación\nusuario (delete)
+
+note bottom
+  **Tiempo Ejecución:** <1 segundo
+  - Validación: <0.1 seg
+  - Operación FS: 0.1-0.5 seg
+  - Confirmaciones: variable (usuario)
+end note
+
+@enduml

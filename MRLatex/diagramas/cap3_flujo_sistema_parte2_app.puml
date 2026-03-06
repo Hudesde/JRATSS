@@ -1,0 +1,87 @@
+@startuml cap3_flujo_sistema_parte2_app
+
+title Flujo del Sistema - Parte 2: Backend, Frontend y Persistencia
+
+skinparam rectangle {
+    BackgroundColor #E3F2FD
+    BorderColor #1976D2
+    FontSize 11
+}
+
+skinparam component {
+    BackgroundColor #BBDEFB
+    BorderColor #1565C0
+}
+
+skinparam database {
+    BackgroundColor #FFF9C4
+    BorderColor #F57C00
+}
+
+skinparam note {
+    BackgroundColor #FFF9C4
+    BorderColor #F57C00
+    FontSize 10
+}
+
+top to bottom direction
+
+' Servicio IA (referencia de Parte 1)
+rectangle "**CAPA IA**\n(LM Studio o OpenAI - ver Parte 1)" as ia_ref #F3E5F5
+
+' Backend
+rectangle "**BACKEND - Node.js + Express**\n(TypeScript 5.8.3, Puerto :3000)" as backend #E3F2FD {
+    component "aiService.ts\nobtenerRespuesta(prompt)" as aiservice #64B5F6
+    component "sesionChatController.ts\nCRUD + envío IA" as controller #64B5F6
+    component "mysql2 Pool\n(10 conexiones)" as pool #FFD54F
+    
+    aiservice -right-> controller: respuesta JSON
+    controller -down-> pool: INSERT/SELECT
+}
+
+' Base de datos
+database "**MySQL 8.0**\ncharlestherapy" as mysql {
+    [SesionChat]
+    [Mensaje]
+    [Usuarios]
+}
+
+' Frontend
+rectangle "**FRONTEND - Angular 19.2.0**\n(TypeScript 5.7.2, Puerto :4200)" as frontend #E8F5E9 {
+    component "ChatbotComponent\n(interfaz usuario)" as chatbot #A5D6A7
+    component "OpenAIService\nsendMessage()" as frontservice #A5D6A7
+    component "SesionChatService\n(historial)" as sesionservice #A5D6A7
+    
+    chatbot -down-> frontservice: mensaje usuario
+    chatbot -down-> sesionservice: guardar/cargar
+}
+
+' Usuario
+actor "Usuario Final" as user #FFF9C4
+
+' Conexiones principales
+ia_ref -down-> aiservice: HTTP POST\n/v1/chat/completions
+pool -down-> mysql: SQL Queries
+controller -right-> frontend: JSON Response\n(contenido, tiempos)
+user -down-> chatbot: Escribe mensaje
+
+note right of frontend
+  **Flujo de respuesta:**
+  1. Usuario envía mensaje
+  2. Frontend → Backend (/api/chat)
+  3. Backend → IA (LM Studio u OpenAI)
+  4. IA genera respuesta
+  5. Backend persiste en MySQL
+  6. Frontend anima respuesta
+     (palabra por palabra, 400ms delay)
+end note
+
+note left of mysql
+  **Persistencia:**
+  • Sesiones de chat
+  • Historial de mensajes
+  • Tiempos de respuesta
+  • Perfil BigFive usuario
+end note
+
+@enduml

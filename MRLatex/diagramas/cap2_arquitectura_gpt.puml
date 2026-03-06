@@ -1,0 +1,55 @@
+@startuml cap2_arquitectura_gpt
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontSize 11
+skinparam ArrowColor #2C3E50
+skinparam shadowing false
+
+title Arquitectura GPT-4 (OpenAI)
+
+rectangle "ENTRADA\nTexto + Imágenes\n(Multimodal)" as input #E8F4F8
+
+rectangle "TOKENIZACIÓN\nByte-Pair Encoding (BPE)\nVocabulario extenso" as tokenizer #FFF9C4
+
+rectangle "EMBEDDINGS\nRepresentación vectorial\nPosicional + Semántica" as embeddings #E1BEE7
+
+package "TRANSFORMER DECODER" as transformer #F5F5F5 {
+    rectangle "ATENCIÓN MULTI-CABEZA\nSelf-Attention\n(Contexto 128K tokens)" as attention #C8E6C9
+    
+    rectangle "FEED-FORWARD\nCapas densas\nActivación GELU" as ffn #C8E6C9
+    
+    rectangle "NORMALIZACIÓN\nLayer Norm\nResidual Connections" as norm #C8E6C9
+}
+
+rectangle "RLHF\nReinforcement Learning\nfrom Human Feedback" as rlhf #FFE5CC
+
+rectangle "SALIDA\nGeneración de tokens\nAutoregresivo" as output #E8F4F8
+
+input -down-> tokenizer
+tokenizer -down-> embeddings
+embeddings -down-> attention
+attention -down-> ffn
+ffn -down-> norm
+norm -down-> rlhf : Alineación
+rlhf -down-> output
+
+note right of attention
+  Arquitectura solo-decoder
+  ~1.76 trillones parámetros (estimado)
+  Entrenamiento en múltiples GPUs
+end note
+
+note right of rlhf
+  **Alineación Humana:**
+  - Supervisión de etiquetadores
+  - Modelo de recompensa
+  - Optimización PPO
+end note
+
+legend top right
+  **Características Clave**
+  Multimodal (texto + visión)
+  Contexto extendido 128K
+  API comercial cerrada
+end legend
+
+@enduml

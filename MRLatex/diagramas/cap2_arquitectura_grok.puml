@@ -1,0 +1,56 @@
+@startuml cap2_arquitectura_grok
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontSize 11
+skinparam ArrowColor #2C3E50
+skinparam shadowing false
+
+title Arquitectura Grok (xAI)
+
+rectangle "ENTRADA\nPrompt del usuario\n+ Contexto de X" as input #E8F4F8
+
+rectangle "INTEGRACIÓN X\nAcceso a publicaciones\nTendencias en tiempo real" as xplatform #E3F2FD
+
+rectangle "TOKENIZACIÓN\nProcesamiento de texto\nContexto social" as tokenizer #FFF9C4
+
+package "TRANSFORMER CORE" as transformer #F5F5F5 {
+    rectangle "ATENCIÓN\nMecanismo de atención\ncontextual extendido" as attention #C8E6C9
+    
+    rectangle "CAPAS DENSAS\nFeed-Forward Networks\nActivación no lineal" as ffn #C8E6C9
+    
+    rectangle "PROCESAMIENTO\nRazonamiento sobre\nseñales sociales" as processing #C8E6C9
+}
+
+rectangle "MODERACIÓN\nFiltros mínimos\nRespuestas directas" as moderation #FFE5CC
+
+rectangle "SALIDA\nRespuesta conversacional\nTono satírico/directo" as output #E8F4F8
+
+input -down-> xplatform
+xplatform -down-> tokenizer
+tokenizer -down-> attention
+attention -down-> ffn
+ffn -down-> processing
+processing -down-> moderation
+moderation -down-> output
+
+note right of xplatform
+  **Integración Nativa:**
+  - Posts públicos
+  - Tendencias actuales
+  - Contexto de conversación
+end note
+
+note right of moderation
+  **Filosofía xAI:**
+  - Menor censura
+  - Respuestas directas
+  - Libertad expresiva
+end note
+
+legend top right
+  **Características Clave**
+  Integración con X (Twitter)
+  Menor moderación
+  Tiempo real
+end legend
+
+@enduml

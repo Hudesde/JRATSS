@@ -1,0 +1,76 @@
+@startuml cap3_backend_mysql_parte1
+
+title Arquitectura Backend Express - Parte 1: Servidor y Controladores
+
+skinparam rectangle {
+    BackgroundColor #E3F2FD
+    BorderColor #1976D2
+    FontSize 11
+}
+
+skinparam component {
+    BackgroundColor #BBDEFB
+    BorderColor #1565C0
+}
+
+skinparam note {
+    BackgroundColor #FFF9C4
+    BorderColor #F57C00
+    FontSize 10
+}
+
+' Orientación vertical
+top to bottom direction
+
+' Cliente HTTP
+rectangle "**CLIENTES HTTP**" as clients #E8F5E9 {
+    component "Angular Frontend\n(localhost:4200)" as angular #A5D6A7
+    component "Postman / Curl\n(Testing)" as postman #A5D6A7
+}
+
+' Servidor Express
+rectangle "**SERVIDOR EXPRESS**" as server_block #E3F2FD {
+    component "Express Server\nPuerto :3000" as server #64B5F6
+    
+    rectangle "Middleware Stack" as middleware #C5CAE9 {
+        component "CORS\n(cross-origin)" as cors #9FA8DA
+        component "Morgan\n(logging)" as morgan #9FA8DA
+        component "express.json()\n(body parser)" as json #9FA8DA
+    }
+}
+
+' Controladores
+rectangle "**CONTROLADORES (8)**" as controllers #FFE082 {
+    component "usuariosController\n(auth, CRUD)" as uc #FFCC80
+    component "sesionChatController\n(sesiones IA)" as scc #FFCC80
+    component "chatController\n(mensajes)" as cc #FFCC80
+    component "bigfiveController\n(test psicométrico)" as bc #FFCC80
+    component "citaController\n(agenda)" as ctc #FFCC80
+    component "observacionController\n(notas clínicas)" as oc #FFCC80
+    component "resultadosTestController" as rtc #FFCC80
+    component "resumenController" as rc #FFCC80
+}
+
+' Conexiones
+clients -down-> server: HTTP Requests\n(GET, POST, PUT, DELETE)
+server -down-> middleware
+middleware -down-> controllers
+
+note right of server
+  **Endpoints principales:**
+  • POST /api/usuarios/login
+  • GET/POST/PUT/DELETE /api/usuarios
+  • GET/POST/PUT /api/sesiones
+  • POST /api/chat
+  • GET/POST/PUT/DELETE /api/citas
+  • POST /api/bigfive
+  • POST /api/resumen
+end note
+
+note bottom of controllers
+  Cada controlador implementa
+  operaciones CRUD específicas
+  y valida datos de entrada
+end note
+
+@enduml

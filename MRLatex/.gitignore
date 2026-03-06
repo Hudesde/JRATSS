@@ -1,0 +1,66 @@
+# LaTeX compilation artifacts
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fls
+*.fdb_latexmk
+*.out
+*.toc
+*.lof
+*.lot
+*.log
+*.synctex.gz
+*.synctex.gz(busy)
+*.dpth
+*.md5
+*.auxlock
+
+# Build directories
+build/
+dist/
+*.code-search
+
+# IDE and editor files
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+*.egg-info/
+
+# Node modules (if applicable)
+node_modules/
+
+# macOS
+.AppleDouble
+.LSOverride
+
+# Temporary files
+*.tmp
+*.bak
+
+# Archivos auxiliares y de versiones anteriores
+ActualizacionBOTAS/
+diagramas_exportados/
+seccion_3.3_BOTAS.tex
+seccionsitas.tex
+compile.log
+main.pdf
+.PATCH_INFO
+*.swp
+
+# Project-specific exclusions
+diagramas_exportados/
+ActualizacionBOTAS/
+seccionsitas.tex
+seccion_*.bak

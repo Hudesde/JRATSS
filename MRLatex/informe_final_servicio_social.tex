@@ -1,0 +1,163 @@
+\documentclass[12pt,letterpaper]{article}
+
+% Paquetes necesarios
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{geometry}
+\usepackage{setspace}
+\usepackage{parskip}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{enumitem}
+
+% Configuración de márgenes (tamaño carta)
+\geometry{
+    letterpaper,
+    left=2.5cm,
+    right=2.5cm,
+    top=2.5cm,
+    bottom=2.5cm
+}
+
+% Interlineado 1.5
+\onehalfspacing
+
+% Configuración de títulos de sección
+\titleformat{\section}{\normalfont\large\bfseries}{\thesection.}{0.5em}{}
+\titlespacing*{\section}{0pt}{1.5ex plus 1ex minus .2ex}{1ex plus .2ex}
+
+% Eliminar numeración de secciones
+\setcounter{secnumdepth}{0}
+
+% Configuración de encabezado y pie de página
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\begin{document}
+
+% ===========================
+% CARÁTULA
+% ===========================
+\begin{titlepage}
+    \centering
+    \vspace*{1cm}
+    
+    {\LARGE \textbf{INFORME FINAL DE SERVICIO SOCIAL}}
+    
+    \vspace{2cm}
+    
+    \hrule
+    \vspace{0.8cm}
+    
+    {\Large \textbf{Datos del Prestador}}
+    
+    \vspace{0.5cm}
+    
+    \begin{tabular}{rl}
+        \textbf{Nombre completo:} & José Ramón Aragón Toledo \\[0.3cm]
+        \textbf{Matrícula:} & 2019020338 \\[0.3cm]
+        \textbf{Carrera:} & Ingeniería en Computación \\[0.3cm]
+        \textbf{Domicilio:} & Av. Doctor Modesto Seara S/N, Acatlima, \\
+        & Huajuapan de León, Oaxaca \\[0.3cm]
+        \textbf{Teléfono:} & 951 200 6434 \\
+    \end{tabular}
+    
+    \vspace{1cm}
+    \hrule
+    \vspace{0.8cm}
+    
+    {\Large \textbf{Datos del Programa}}
+    
+    \vspace{0.5cm}
+    
+    \begin{tabular}{rl}
+        \textbf{Nombre del programa:} & Desarrollo e Investigación de Aplicaciones \\
+        & Basadas en Inteligencia Artificial y LLMs \\[0.3cm]
+        \textbf{Institución receptora:} & Universidad Tecnológica de la Mixteca \\
+        & Instituto de Computación \\[0.3cm]
+        \textbf{Supervisor:} & M.C. Ricardo Ruiz Rodríguez \\[0.3cm]
+        \textbf{Período de realización:} & 31 de marzo de 2025 al 30 de enero de 2026 \\
+    \end{tabular}
+    
+    \vspace{1.5cm}
+    \hrule
+    
+    \vfill
+    
+    {\large Huajuapan de León, Oaxaca}\\[0.3cm]
+    {\large 30 de enero de 2026}
+    
+\end{titlepage}
+
+% ===========================
+% CONTENIDO DEL INFORME
+% ===========================
+
+\section{Objetivo del Programa}
+
+El programa de servicio social tuvo como objetivo principal el desarrollo de un marco histórico y referencial integral que permitiera comprender, comparar y aplicar de manera fundamentada las tecnologías de Inteligencia Artificial basadas en Modelos Grandes de Lenguaje (LLM, \textit{Large Language Models}). Adicionalmente, se buscó materializar estos conocimientos teóricos mediante el desarrollo de aplicaciones funcionales que demostraran la integración práctica de APIs de inteligencia artificial en soluciones de software reales, abarcando desde asistentes de voz hasta sistemas de terapia conversacional.
+
+\section{Metodología y Estrategias de Solución}
+
+Para abordar la problemática de la falta de documentación técnica accesible y ejemplos prácticos de implementación de tecnologías de IA en el contexto académico mexicano, se implementó una metodología de trabajo en tres fases:
+
+\textbf{Fase 1: Investigación y Documentación Teórica.} Se realizó una investigación exhaustiva sobre el estado actual de las inteligencias artificiales generativas, analizando modelos representativos como GPT-4, Gemini, DeepSeek y Grok. Se documentaron aspectos técnicos fundamentales incluyendo arquitecturas de transformers, mecanismos de atención, procesamiento multimodal y técnicas de optimización como \textit{Mixture of Experts} (MoE).
+
+\textbf{Fase 2: Desarrollo de Aplicaciones Prácticas.} Se implementaron tres proyectos de software que demostraron la aplicación práctica de los conceptos investigados:
+
+\begin{itemize}[leftmargin=2cm]
+    \item \textbf{Botas:} Asistente de voz para gestión de archivos desarrollado en Perl 5.38, integrando reconocimiento de voz mediante OpenAI Whisper API, interpretación de comandos con GPT-4 y síntesis de voz con eSpeak. El sistema cuenta con 8 módulos especializados y scripts AWK para procesamiento de datos.
+    
+    \item \textbf{CharlesTherapy:} Plataforma de terapia conversacional basada en el paradigma rogeriano, desarrollada con Angular 19.2.0 para el frontend, Express 5.1.0 para el backend y MySQL 8.0.43 para persistencia de datos. Implementa técnicas de reflejo empático y escucha activa mediante prompts especializados.
+    
+    \item \textbf{Kuiti:} Chatbot universitario desarrollado para la Universidad Tecnológica de la Mixteca, diseñado para proporcionar información institucional, orientación académica y asistencia a estudiantes mediante procesamiento de lenguaje natural con integración de APIs de OpenAI.
+\end{itemize}
+
+\textbf{Fase 3: Documentación Técnica y Diagramación.} Se elaboraron diagramas técnicos en PlantUML que ilustran las arquitecturas de los sistemas desarrollados, flujos de comunicación, modelos de datos y procesos de integración con APIs externas.
+
+\section{Resultados Obtenidos}
+
+El servicio social culminó con los siguientes entregables y logros concretos:
+
+\begin{itemize}[leftmargin=2cm]
+    \item \textbf{Marco Histórico y Referencial para el Desarrollo de Aplicaciones con IA:} Documento de más de 4,000 líneas en \LaTeX{} que abarca la historia, evolución y estado actual de los LLMs, incluyendo análisis comparativos de GPT-4, Gemini, DeepSeek y Grok.
+    
+    \item \textbf{Repositorio GitHub Público (JRATSS):} Código fuente completo de las tres aplicaciones desarrolladas, disponible en \texttt{github.com/Hudesde/JRATSS} para consulta y reutilización por la comunidad académica.
+    
+    \item \textbf{Botas - Sistema Funcional:} Aproximadamente 1,400 líneas de código distribuidas en 8 módulos Perl, 3 scripts AWK y 3 plantillas de proyectos. Funcionalidades de reconocimiento de voz, gestión segura de archivos y síntesis de voz completamente operativas.
+    
+    \item \textbf{CharlesTherapy - Plataforma Desplegable:} Aplicación full-stack con arquitectura cliente-servidor, sistema de autenticación, historial de conversaciones y motor de terapia rogeriana basado en GPT.
+    
+    \item \textbf{5 Diagramas Técnicos:} Diagramas PlantUML de alta resolución que documentan arquitecturas, flujos de datos y modelos relacionales de los sistemas implementados.
+\end{itemize}
+
+\section{Conclusiones}
+
+El desarrollo del presente servicio social permitió alcanzar satisfactoriamente los objetivos planteados, generando un marco referencial que sirve como recurso didáctico para estudiantes y desarrolladores interesados en la integración de tecnologías de inteligencia artificial en sus proyectos.
+
+Las aplicaciones desarrolladas demuestran que es posible implementar soluciones funcionales utilizando APIs de LLM con recursos accesibles, tanto en la nube (OpenAI, Google) como de forma local (LM Studio, DeepSeek). La documentación generada proporciona una base sólida para futuras investigaciones y desarrollos en el Instituto de Computación de la Universidad Tecnológica de la Mixteca.
+
+Se concluye que la democratización del acceso a modelos de lenguaje avanzados representa una oportunidad significativa para el desarrollo tecnológico en instituciones educativas mexicanas, y que la combinación de investigación teórica con implementación práctica constituye una metodología efectiva para la formación de profesionales en el área de inteligencia artificial aplicada.
+
+\vspace{1.5cm}
+
+\begin{center}
+\begin{tabular}{p{6cm}p{1.5cm}p{6cm}}
+\centering\rule{5.5cm}{0.4pt} & & \centering\rule{5.5cm}{0.4pt}\tabularnewline[0.3cm]
+\centering\textbf{Prestador del Servicio Social} & & \centering\textbf{Supervisor}\tabularnewline[0.3cm]
+\centering José Ramón Aragón Toledo & & \centering M.C. Ricardo Ruiz Rodríguez\tabularnewline
+\end{tabular}
+
+\vspace{1.5cm}
+
+\rule{6cm}{0.4pt}\\[0.3cm]
+\textbf{Vo. Bo. del Jefe de Carrera}\\[0.5cm]
+M.C. Enrique Alejandro López\\
+Jefe de Carrera de Ingeniería en Computación
+\end{center}
+
+\end{document}

@@ -1,0 +1,129 @@
+@startuml cap3_backend_mysql
+
+title Arquitectura Backend Express + MySQL - CharlesTherapy
+
+skinparam componentStyle rectangle
+skinparam component {
+    BackgroundColor #E3F2FD
+    BorderColor #1976D2
+}
+
+skinparam database {
+    BackgroundColor #FFF9C4
+    BorderColor #F57C00
+}
+
+' Cliente HTTP
+rectangle "Cliente HTTP" as client #E8F5E9 {
+    [Angular Frontend]
+    [Postman/Curl]
+}
+
+' Capa Express
+package "Backend Express (Node.js + TypeScript)" as express #E3F2FD {
+    
+    ' Servidor
+    component "Server\n:3000" as server #BBDEFB
+    
+    ' Middleware
+    rectangle "Middleware" as middleware #C5CAE9 {
+        [CORS]
+        [Morgan Logging]
+        [express.json()]
+    }
+    
+    ' Controladores
+    rectangle "Controladores (8)" as controllers #FFE082 {
+        [usuariosController] as uc
+        [sesionChatController] as scc
+        [chatController] as cc
+        [bigfiveController] as bc
+        [citaController] as ctc
+        [observacionController] as oc
+        [resultadosTestController] as rtc
+        [resumenController] as rc
+    }
+    
+    ' Servicios
+    rectangle "Servicios" as services #C8E6C9 {
+        [aiService\n(OpenAI/LM Studio)]
+    }
+    
+    ' Modelos/Interfaces
+    rectangle "Modelos TypeScript" as models #E1BEE7 {
+        interface SesionChat
+        interface BigFiveResult
+        interface Cita
+        interface ResultadoTest
+        interface Resumen
+    }
+    
+    ' Pool de Conexiones
+    component "dataBase.ts\nmysql2 pool" as pool #FFF9C4
+}
+
+' Base de Datos MySQL
+database "MySQL\ncharlestherapy" as mysql {
+    folder "Tablas (7)" {
+        [usuarios]
+        [sesiones]
+        [bigfive]
+        [cita]
+        [observaciones]
+        [resumen]
+        [mensajes]
+    }
+}
+
+' Conexiones Cliente -> Backend
+client --> server: HTTP Requests
+
+' Flujo interno Backend
+server --> middleware
+middleware --> controllers
+
+' Controladores usan servicios
+cc --> services
+scc --> pool
+uc --> pool
+bc --> pool
+ctc --> pool
+oc --> pool
+rtc --> pool
+rc --> pool
+
+' Modelos usados por controladores
+controllers ..> models: implementan
+
+' Pool se conecta a MySQL
+pool --> mysql: SQL Queries\n(execute, query)
+
+' Endpoints REST (notas)
+note right of server
+  **Endpoints principales:**
+  POST /api/usuarios/login
+  GET/POST/PUT/DELETE /api/usuarios
+  GET/POST/PUT /api/sesiones
+  POST /api/chat
+  GET/POST/PUT/DELETE /api/citas
+  POST /api/bigfive
+  POST /api/resumen
+end note
+
+note right of pool
+  **Configuración:**
+  host: localhost
+  user: root
+  database: charlestherapy
+  connectionLimit: 10
+end note
+
+note bottom of mysql
+  **Relaciones FK:**
+  sesiones.id_usuario → usuarios.id_usuario
+  bigfive.id_usuario → usuarios.id_usuario
+  cita.id_paciente → usuarios.id_usuario
+  cita.id_especialista → usuarios.id_usuario
+end note
+
+@enduml

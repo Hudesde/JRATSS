@@ -1,0 +1,79 @@
+@startuml cap3_flujo_sistema_parte1_ia
+
+title Flujo del Sistema - Parte 1: Capa de Inteligencia Artificial
+
+skinparam rectangle {
+    BackgroundColor #E3F2FD
+    BorderColor #1976D2
+    FontSize 11
+}
+
+skinparam component {
+    BackgroundColor #BBDEFB
+    BorderColor #1565C0
+}
+
+skinparam note {
+    BackgroundColor #FFF9C4
+    BorderColor #F57C00
+    FontSize 10
+}
+
+top to bottom direction
+
+' Título de la sección
+rectangle "**CAPA DE IA - DOS MODOS DE OPERACIÓN**\n(Solo uno activo a la vez)" as ia_layer #F3E5F5 {
+    
+    ' Modo Local
+    rectangle "**MODO LOCAL** 💻\nPrivacidad 100%" as local_mode #E8F5E9 {
+        component "LM Studio 0.3.30\nServidor de Inferencia" as lmstudio #A5D6A7
+        component "DeepSeek-R1-Distill-Qwen-7B\n(4.5GB, Q4_K_M)" as deepseek #81C784
+        
+        lmstudio -down-> deepseek: Carga modelo
+        
+        note right of lmstudio
+          **Endpoint:** http://localhost:1234/v1
+          **API:** Compatible con OpenAI
+          **CORS:** Habilitado
+          **GPU:** Aceleración opcional
+        end note
+    }
+    
+    ' Separador visual
+    rectangle "   **─── O ───**   " as separator #FFFFFF
+    
+    ' Modo Cloud
+    rectangle "**MODO CLOUD** ☁️\nCalidad Superior" as cloud_mode #E3F2FD {
+        component "OpenAI API\n(api.openai.com)" as openai #64B5F6
+        component "GPT-4 / GPT-4o\n(Modelos de última generación)" as gpt4 #42A5F5
+        
+        openai -down-> gpt4: Procesa prompt
+        
+        note right of openai
+          **Endpoint:** https://api.openai.com/v1
+          **Autenticación:** API Key requerida
+          **Facturación:** Por tokens
+          **Latencia:** ~1-3 segundos
+        end note
+    }
+}
+
+' Servicio unificado
+rectangle "**OpenAIService.ts**\n(SDK OpenAI 4.102.0)" as service #FFECB3 {
+    component "getClient().chat.completions.create()" as method #FFD54F
+}
+
+' Conexiones
+local_mode -down-> service: baseURL: localhost:1234\napiKey: 'not-needed'
+cloud_mode -down-> service: baseURL: api.openai.com\napiKey: sk-xxxxx
+
+note bottom of service
+  **Configuración intercambiable:**
+  El mismo código funciona con ambos modos.
+  Solo cambian 3 propiedades:
+  • apiKey
+  • baseURL
+  • modelName
+end note
+
+@enduml

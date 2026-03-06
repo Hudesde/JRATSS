@@ -1,0 +1,85 @@
+@startuml cap3_flujo_comunicacion
+
+title Flujo de Comunicación - Chatbot CharlesTherapy
+
+skinparam sequenceMessageAlign center
+skinparam responseMessageBelowArrow true
+
+actor Usuario as user
+participant "ChatbotModal\nComponent" as chatbot #LightBlue
+participant "OpenAIService" as service #LightGreen
+participant "Backend Express\n/api/chat" as backend #Orange
+participant "aiService" as ai #Yellow
+participant "LM Studio\nlocalhost:1234" as lm #Pink
+database "MySQL\ncharlestherapy" as db #LightGray
+
+== Inicio de Conversación ==
+
+user -> chatbot: Escribe mensaje\n"Me siento ansioso"
+activate chatbot
+
+chatbot -> chatbot: Actualiza history[]
+note right: Agrega {role:'user', content}
+
+chatbot -> service: chat(messages)
+activate service
+note right of service: messages = [\n  {role:'system', content},\n  {role:'user', content:'Me siento ansioso'}\n]
+
+service -> backend: POST /api/chat\nBody: {messages: [...]}
+activate backend
+
+backend -> backend: chatController.chat()
+note right: Valida request
+
+backend -> ai: aiService.chat(messages)
+activate ai
+
+ai -> ai: Verifica AI_PROVIDER\n(lmstudio)
+
+ai -> lm: POST /v1/chat/completions\nBody: {model, messages}
+activate lm
+note right of lm: DeepSeek-R1 procesa\ncon parámetros:\n- temperature: 1.0\n- top_p: 0.95
+
+lm --> lm: Inferencia (4096 tokens)
+note right: Progress: 100%
+
+lm --> ai: Response:\n{\n  choices: [{\n    message: {\n      content: "respuesta"\n    }\n  }]\n}
+deactivate lm
+
+ai --> backend: message.content
+deactivate ai
+
+backend --> service: JSON:\n{message: "Te entiendo..."}
+deactivate backend
+
+service --> chatbot: string: "Te entiendo..."
+deactivate service
+
+chatbot -> chatbot: Actualiza history[]\ncon respuesta assistant
+
+chatbot -> chatbot: Animación palabra\npor palabra
+
+chatbot --> user: Muestra respuesta\nen interfaz
+deactivate chatbot
+
+== Persistencia en MySQL ==
+
+user -> chatbot: Finaliza sesión
+activate chatbot
+
+chatbot -> backend: POST /api/sesiones\nBody: {\n  id_usuario,\n  contenido: JSON.stringify(messages)\n}
+activate backend
+
+backend -> db: INSERT INTO sesiones\n(id_usuario, contenido)\nVALUES (?, ?)
+activate db
+
+db --> backend: insertId: 123
+deactivate db
+
+backend --> chatbot: {message: "Sesión creada",\nid_sesion: 123}
+deactivate backend
+
+chatbot --> user: Sesión guardada
+deactivate chatbot
+
+@enduml
